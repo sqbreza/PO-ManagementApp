@@ -141,6 +141,11 @@ class QuotationController extends Controller
 
             if($isSave) {
                 $transaction->commit();
+                Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
+                return $this->redirect('create-quotation');
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'An error occurred during submit process, Please submit again');
+                return $this->redirect('create-quotation');
             }
 
         }catch (Exception $e){

@@ -25,7 +25,15 @@ $company = ArrayHelper::map(Company::find()->all(), 'id', 'company_name');
 $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 
 ?>
+
+<div class="container">
+    <center class="text-muted" style="background:lightblue; margin-bottom: 50px; width: 95%;">
+        <?= Yii::$app->session->getFlash('error'); ?>
+    </center>
+</div>
 <div class="quotation-index container">
+
+
 
     <form class="form-horizontal" onsubmit="return false;"  enctype="multipart/form-data">
 
@@ -256,7 +264,7 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 
 
         <div class="row" style="margin-top: 50px; margin-bottom: 50px;">
-            <div class="col-sm-6"></div>
+            <div class="col-sm-5"></div>
            <div class="col-sm-2"><button class="btn btn-success btn-lg" id="save"> Save </button></div>
         </div>
 
@@ -264,6 +272,8 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 
 
     </form>
+
+
 
     <blockquote class="text-muted" style="background: #f5f5f5; font-size: 12px;">
         * Cost per day

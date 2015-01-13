@@ -102,3 +102,6 @@ a.desc:after {
 .template-input-design{
     background: ghostwhite;
 }
+.ice9QuotationHeader{
+    background: url('../images/ice9.png');
+}
