@@ -7,16 +7,22 @@ $('body').on('click', '.add', function (e) {
 
     var divItem =$(this).parents('.addSection');
     nameOfSectionId = divItem.attr("id");
-    $(this).parents('.addLine').append("<div class='form-group eachLine'><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_field_names[]' class='form-control' /></div><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_details[]' class='form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_costs[]' class='form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_units[]'class='form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_total[]' class='form-control'/></div><div class='col-sm-2'><button class='btn btn-sm btn-danger delete'>Delete</button> <button class='btn btn-sm btn-success add'>Add</button></div></div>");
+    $(this).parents('.addLine').append("<div class='form-group eachLine'><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_field_names[]' class='form-control' /></div><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_details[]' class='form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_costs[]' class='costs form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_units[]'class='units form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_total[]' class='total form-control'/></div><div class='col-sm-2'><button class='btn btn-sm btn-danger delete'>Delete</button> <button class='btn btn-sm btn-success add'>Add</button></div></div>");
 });
 
-/*
-$('body').on('click', '.total', function (e) {
 
+/*$('body').on('click', '.costs', function (e) {
+
+});*/
+
+
+/*
+$( ".addSection" ).on('keyup','.costs',function() {
+    console.log("aloo");
 });
 */
 
-$( ".costs" ).keyup(function() {
+$( ".addSection" ).on('keyup','.costs',function() {
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();
     total = $(this).parents('.eachLine').find('.total').val(costs*units);
@@ -44,7 +50,7 @@ $( ".costs" ).keyup(function() {
 });
 
 
-$( ".units" ).keyup(function() {
+$( ".addSection" ).on('keyup','.units',function() {
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();
     total = $(this).parents('.eachLine').find('.total').val(costs*units);

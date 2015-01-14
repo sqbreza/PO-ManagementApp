@@ -46,12 +46,10 @@ class QuotationController extends Controller
         ]);
     }
 
-
-
     public function actionForm()
     {
 
-        print_r($_POST);
+        //print_r($_FILES);
         //print_r($_FILES);
         $isSave = true;
 
@@ -71,20 +69,32 @@ class QuotationController extends Controller
         $grand_total = $_POST['grand_total'];
         $show_section_amount = $_POST['show_section_amount'];
         $note = $_POST['note'];
-
         $results = $_POST['section_name'];
+        $file_name_temp = '';
 
-        $file_name = '';
+        if($_FILES['file']['size'][0] != 0){
 
-        if($_FILES['file']['size'] != 0){
-            $file = UploadedFile::getInstanceByName('file');
-            $ext = pathinfo($file, PATHINFO_EXTENSION);
+            $files = UploadedFile::getInstancesByName('file');
 
-            echo $file_name = 'ARC'.date('Ymdhis').'.'.$ext;
+            foreach($files as $key=>$file){
 
-            if(!$file->saveAs('uploads/'.$file_name)){
-                $isSave = false;
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                $file_name = 'ARC'.date('Ymdhis').$key.'.'.$ext;
+
+                if(!$file->saveAs('uploads/'.$file_name)){
+                    $isSave = false;
+                }
+
+                if($key ==0){
+                    $file_name_temp .= $file_name;
+                }else{
+                    $file_name_temp .= "|".$file_name;
+                }
+
             }
+            $f = explode("|",$file_name_temp);
+
+
 
         }
 
@@ -130,7 +140,127 @@ class QuotationController extends Controller
             $model->user_id = $user_id;
             $model->supervisor_name = $supervisor_name;
             $model->show_section_amount = $show_section_amount;
-            $model->file_name = $file_name;
+            $model->file_name = $file_name_temp;
+            $model->note = $note;
+            $model->created_time = date('Y-m-d H:i:s');
+
+            if(!$model->save()) {
+                $isSave = false;
+            }
+
+
+            if($isSave) {
+                $transaction->commit();
+                Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
+                return $this->redirect('create-quotation');
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'An error occurred during submit process, Please submit again');
+                return $this->redirect('create-quotation');
+            }
+
+        }catch (Exception $e){
+            $transaction->rollback();
+        }
+
+    }
+
+
+
+    public function actionFormUpdate()
+    {
+
+        //print_r($_FILES);
+        //print_r($_FILES);
+        $isSave = true;
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+        $supervisor_name = $_POST['supervisor_name'];
+        $ref = $_POST['ref'];
+        $user_id = $_POST['user_id'];
+        $status = $_POST['status'];
+        $template_ref = $_POST['template_ref'];
+        $company_id = $_POST['company_id'];
+        $client_company_id = $_POST['client_company_id'];
+        $project_name = $_POST['project_name'];
+        $po_no = $_POST['po_no'];
+        $date = $_POST['date'];
+        $grand_total = $_POST['grand_total'];
+        $show_section_amount = $_POST['show_section_amount'];
+        $note = $_POST['note'];
+        $results = $_POST['section_name'];
+        $file_name_temp = '';
+
+        if($_FILES['file']['size'][0] != 0){
+
+            $files = UploadedFile::getInstancesByName('file');
+
+            foreach($files as $key=>$file){
+
+                $ext = pathinfo($file, PATHINFO_EXTENSION);
+                $file_name = 'ARC'.date('Ymdhis').$key.'.'.$ext;
+
+                if(!$file->saveAs('uploads/'.$file_name)){
+                    $isSave = false;
+                }
+
+                if($key ==0){
+                    $file_name_temp .= $file_name;
+                }else{
+                    $file_name_temp .= "|".$file_name;
+                }
+
+            }
+            $f = explode("|",$file_name_temp);
+
+
+
+        }
+
+        try{
+
+            foreach($results as $key=>$value){
+                $section_name = $value;
+                $field_names = $_POST[$section_name."_field_names"];
+                $details = $_POST[$section_name."_details"];
+                $costs = $_POST[$section_name."_costs"];
+                $units = $_POST[$section_name."_units"];
+                $total = $_POST[$section_name."_total"];
+
+                foreach($field_names as $key=>$value){
+
+                    $model = QuationRef::find()->where;
+
+                    $model->quotation_ref = $ref;
+                    $model->template_ref = $template_ref;
+                    $model->section = $section_name;
+                    $model->field_name = $field_names[$key];
+                    $model->details = $details[$key];
+                    $model->cost_day = $costs[$key];
+                    $model->units = $units[$key];
+                    $model->total = $total[$key];
+
+                    if(!$model->save()) {
+                        $isSave = false;
+                    }
+                }
+            }
+
+            $model = new Quotation();
+
+            $model->ref = $ref;
+            $model->project_name = $project_name;
+            $model->company_id = $company_id;
+            $model->client_company_id = $client_company_id;
+            $model->amount = $grand_total;
+            $model->po_no = $po_no;
+            $model->date = date('Y-m-d', strtotime(str_replace('-', '/', $date)));
+            $model->status = $status;
+            $model->user_id = $user_id;
+            $model->supervisor_name = $supervisor_name;
+            $model->show_section_amount = $show_section_amount;
+            $model->file_name = $file_name_temp;
             $model->note = $note;
             $model->created_time = date('Y-m-d H:i:s');
 
@@ -169,6 +299,16 @@ class QuotationController extends Controller
 
     }
 
+    public function actionViewQuotation($id)
+    {
+
+        return $this->render('view-quotation', [
+            'model' => $this->findModel($id),
+        ]);
+
+
+    }
+
     /**
      * Displays a single Quotation model.
      * @param integer $id
@@ -176,9 +316,11 @@ class QuotationController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        /*return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+        ]);*/
+
+        echo $id;
     }
 
     /**

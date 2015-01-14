@@ -7,6 +7,7 @@ use app\models\TemplateFields;
 use app\models\Company;
 use app\models\Clients;
 use dosamigos\datepicker\DatePicker;
+use kartik\file\FileInput;
 
 
 
@@ -254,10 +255,12 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
         </div>
 
         <div class="row">
-            <input type="file" class="form-control" name="file" id="file">
+            <input type="file" class="form-control" name="file[]" id="file" multiple="true">
         </div>
 
-        <div class="row">
+
+
+        <div class="row" style="margin-top: 30px;">
             <label class="form-control">Note : </label>
             <textarea name="note" class="form-control"></textarea>
         </div>

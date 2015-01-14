@@ -63,7 +63,6 @@ $quotation = QuationRef::find()->all();
             <th style="width: 15%;">Total</th>
         </tr>
         <?php
-        for($i=0;$i<8;$i++){
         foreach($quotation as $key=>$value):
         ?>
         <tr class="table-bordered">
@@ -78,8 +77,8 @@ $quotation = QuationRef::find()->all();
         <?php
 
         endforeach;
-            //echo "<br/><br/><br/>";
-        }
         ?>
     </table>
 </div>
+
+
