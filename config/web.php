@@ -56,6 +56,9 @@ $config = [
             'destination' => Pdf::DEST_BROWSER,
             // refer settings section for all configuration options
         ],
+        'mycomponent' => [
+            'class' => 'app\components\MyComponent',
+        ],
         'db' => require(__DIR__ . '/db.php'),
     ],
     'params' => $params,

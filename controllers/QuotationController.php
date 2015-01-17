@@ -296,7 +296,6 @@ class QuotationController extends Controller
         ]);
 
 
-
     }
 
     public function actionViewQuotation($id)
@@ -316,11 +315,17 @@ class QuotationController extends Controller
      */
     public function actionView($id)
     {
-        /*return $this->render('view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);*/
+        ]);
+    }
 
-        echo $id;
+    public function actionTest()
+    {
+        $company = 'Ice9';
+        echo Yii::$app->mycomponent->generateQuotationRef($company);
+       // Yii::$app->mycomponent->welcome();
+
     }
 
     /**
