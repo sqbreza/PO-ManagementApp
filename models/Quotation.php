@@ -10,6 +10,7 @@ use Yii;
  * @property integer $id
  * @property string $ref
  * @property string $project_name
+ * @property string $project_name_header
  * @property integer $company_id
  * @property integer $client_company_id
  * @property double $amount
@@ -19,8 +20,10 @@ use Yii;
  * @property integer $user_id
  * @property string $supervisor_name
  * @property integer $show_section_amount
+ * @property string $template_ref
  * @property string $file_name
- * @property string $note
+ * @property string $note_up
+ * @property string $note_down
  * @property string $created_time
  *
  * @property Clients $clientCompany
@@ -46,8 +49,8 @@ class Quotation extends \yii\db\ActiveRecord
             [['company_id', 'client_company_id', 'user_id', 'show_section_amount'], 'integer'],
             [['amount'], 'number'],
             [['date', 'created_time'], 'safe'],
-            [['note'], 'string'],
-            [['ref', 'project_name', 'po_no', 'status', 'file_name'], 'string', 'max' => 255],
+            [['note_up', 'note_down'], 'string'],
+            [['ref', 'project_name', 'project_name_header', 'po_no', 'status', 'template_ref', 'file_name'], 'string', 'max' => 255],
             [['supervisor_name'], 'string', 'max' => 11]
         ];
     }
@@ -61,6 +64,7 @@ class Quotation extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'ref' => Yii::t('app', 'Ref'),
             'project_name' => Yii::t('app', 'Project Name'),
+            'project_name_header' => Yii::t('app', 'Project Name Header'),
             'company_id' => Yii::t('app', 'Company ID'),
             'client_company_id' => Yii::t('app', 'Client Company ID'),
             'amount' => Yii::t('app', 'Amount'),
@@ -70,8 +74,10 @@ class Quotation extends \yii\db\ActiveRecord
             'user_id' => Yii::t('app', 'User ID'),
             'supervisor_name' => Yii::t('app', 'Supervisor Name'),
             'show_section_amount' => Yii::t('app', 'Show Section Amount'),
+            'template_ref' => Yii::t('app', 'Template Ref'),
             'file_name' => Yii::t('app', 'File Name'),
-            'note' => Yii::t('app', 'Note'),
+            'note_up' => Yii::t('app', 'Note Up'),
+            'note_down' => Yii::t('app', 'Note Down'),
             'created_time' => Yii::t('app', 'Created Time'),
         ];
     }

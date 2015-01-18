@@ -1,13 +1,14 @@
 <?php
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\TemplateFields;
-use app\models\QuationRef;
 use app\models\Company;
 use app\models\Clients;
 use dosamigos\datepicker\DatePicker;
 use kartik\file\FileInput;
+use app\models\QuationRef;
 
 
 
@@ -27,7 +28,6 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 
 $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('section')->orderBy('id')->asArray()->all();
 
-
 ?>
 
 <div class="container">
@@ -45,40 +45,29 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Supervisor : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="supervisor_name" value="<?=$model->supervisor_name?>"/></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="supervisor_name" value="<?= $model->supervisor_name;?>"/></div>
 
     </div>
 </div>
 
 <!-- TEMPORARY FIELDS STARTS-->
-<div class="row">
+<!--<div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Ref no : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="ref" value="<?=$model->ref?>" /></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="ref"/></div>
 
     </div>
-</div>
+</div>-->
 
-<div class="row">
-    <div class="form-group">
-        <div class="col-sm-2"><label  class="form-control">User ID : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="user_id" value="<?=$model->user_id?>"/></div>
 
-    </div>
-</div>
+<input type="hidden" class="form-control" name="template_ref" value="<?= $model->template_ref;?>" />
+<input type="hidden" class="form-control" name="user_id" value="<?= $model->user_id;?>" />
 
-<div class="row">
-    <div class="form-group">
-        <div class="col-sm-2"><label  class="form-control">Template ref ID : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="template_ref" /></div>
-
-    </div>
-</div>
 
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Status : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="status" /></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="status" value ="<?= $model->status;?>"/></div>
 
     </div>
 </div>
@@ -121,7 +110,7 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation For : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="project_name" value="<?=$model->project_name?>"/></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="project_name" id="project_name" value="<?= $model->project_name;?>"/></div>
 
     </div>
 </div>
@@ -129,7 +118,7 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation Header : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="project_name_full"/></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="project_name_header" id="project_name_header" value="<?= $model->project_name_header;?>"/></div>
 
     </div>
 </div>
@@ -139,7 +128,7 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">PO no : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="po_no" value="<?=$model->po_no?>" /></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="po_no" value="<?= $model->po_no;?>"/></div>
 
     </div>
 </div>
@@ -152,7 +141,7 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 
             <?= DatePicker::widget([
                 'name' => 'date',
-                'value' =>$model->date,
+                'value' =>date("d-m-Y"),
                 'template' => '{addon}{input}',
                 'clientOptions' => [
                     'autoclose' => true,
@@ -164,6 +153,15 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 
     </div>
 </div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-2"><label  class="form-control">Note : </label></div>
+        <div class="col-sm-8"><textarea class="form-control" name="note_up"><?= $model->note_up;?></textarea></div>
+
+    </div>
+</div>
+
 
 
 <div class="row" style="margin-top:50px;">
@@ -178,7 +176,7 @@ $section = QuationRef::find()->where(['quotation_ref'=>$model->ref])->groupBy('s
 
 <?php
 foreach($section as $value){
-    $result =QuationRef::find()->where(['quotation_ref'=>'RF2313','section'=>$value['section']])->orderBy('id')->asArray()->all();
+    $result =QuationRef::find()->where(['quotation_ref'=>$model->ref,'section'=>$value['section']])->orderBy('id')->asArray()->all();
     ?>
     <div class="row">
         <h4> <?= $value['section'];?></h4>
@@ -192,8 +190,8 @@ foreach($section as $value){
                     <div class="form-group eachLine">
 
                         <div class="col-sm-3"><input type="text" name="<?= $value['section'];?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
-                        <div class="col-sm-3"><input type="text" name="<?= $value['section'];?>_details[]" class="form-control" value="<?= $val['details'];?>"/></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $value['section'];?>_costs[]" class="costs form-control" value="<?= $val['cost_day'];?>"/></div>
+                        <div class="col-sm-3"><input type="text" name="<?= $value['section'];?>_details[]" class="form-control" value="<?= $val['details'];?>" /></div>
+                        <div class="col-sm-1"><input type="text" name="<?= $value['section'];?>_costs[]" class="costs form-control" value="<?= $val['cost_day'];?>" /></div>
                         <div class="col-sm-1"><input type="text" name="<?= $value['section'];?>_units[]" class="units form-control" value="<?= $val['units'];?>"/></div>
                         <div class="col-sm-2"><input type="text" name="<?= $value['section'];?>_total[]" class="total form-control" value="<?= $val['total'];?>"/></div>
                         <div class="col-sm-2">
@@ -227,51 +225,68 @@ foreach($section as $value){
 
 
 <div class="row" style="margin-top: 50px;">
-    <div class="col-sm-5"></div>
-    <div class="col-sm-3"><label class="form-control">Total:</label></div>
-    <div class="col-sm-2"><input type="text" name="sum_of_total" class="form-control" id="sum_total"/></div>
-</div>
-
-<div class="row">
-    <div class="col-sm-5"></div>
-    <div class="col-sm-3"><label class="form-control">In words:</label></div>
-    <div class="col-sm-4"><input type="text" name="amounts_in_word" class="form-control" id="amount_in_words"/></div>
-</div>
-
-<div class="row">
-    <div class="col-sm-2">
-        <label>
-            <input type="hidden" name="show_section_amount" value="0">
-            <input type="checkbox" id="" name="show_section_amount" value="1"> Show Sub-total in Template
-
-        </label>
-    </div>
-    <div class="col-sm-3">
-
-        <label>
-            <input type="checkbox" id="check_id"> Add VAT @ 15%
-        </label>
+    <div class="form-group">
+        <div class="col-sm-3"><label class="form-control">Total:</label></div>
+        <div class="col-sm-5"></div>
+        <div class="col-sm-2"><input type="text" name="sum_of_total" class="form-control" id="sum_total"/></div>
 
     </div>
-    <div class="col-sm-3"><label class="form-control">Grand total:</label></div>
-    <div class="col-sm-2"><input type="text" name="grand_total" class="form-control" id="grand_total"/></div>
 </div>
 
 <div class="row">
-    <input type="file" class="form-control" name="file[]" id="file" multiple="true">
+    <div class="form-group">
+        <div class="col-sm-3"><label class="form-control">In words:</label></div>
+        <div class="col-sm-7"><input type="text" name="amounts_in_word" class="form-control" id="amount_in_words"/></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-2">
+            <label>
+                <input type="hidden" name="show_section_amount" value="0">
+                <input type="checkbox" id="" name="show_section_amount" value="1"> Show Sub-total in Template
+
+            </label>
+        </div>
+        <div class="col-sm-3">
+
+            <label>
+                <input type="checkbox" id="check_id"> Add VAT @ 15%
+            </label>
+
+        </div>
+        <div class="col-sm-3"><label class="form-control">Grand total:</label></div>
+        <div class="col-sm-2"><input type="text" name="grand_total" class="form-control" id="grand_total"/></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-10">
+            <input type="file" class="form-control" name="file[]" id="file" multiple="true">
+        </div>
+    </div>
 </div>
 
 
 
-<div class="row" style="margin-top: 30px;">
-    <label class="form-control">Note : </label>
-    <textarea name="note" class="form-control"><?= $model->note;?></textarea>
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-2"><label  class="form-control">Note : </label></div>
+        <div class="col-sm-8"><textarea class="form-control" name="note_down"><?=$model->note_down;?></textarea></div>
+
+    </div>
 </div>
 
 
-<div class="row" style="margin-top: 50px; margin-bottom: 50px;">
-    <div class="col-sm-5"></div>
-    <div class="col-sm-2"><button class="btn btn-success btn-lg" id="save"> Save </button></div>
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-5"></div>
+        <div class="col-sm-2">
+            <button class=" btn btn-success" id="update"> Update </button>
+        </div>
+    </div>
 </div>
 
 

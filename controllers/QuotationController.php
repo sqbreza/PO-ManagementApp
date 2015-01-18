@@ -49,7 +49,7 @@ class QuotationController extends Controller
     public function actionForm()
     {
 
-        //print_r($_FILES);
+        print_r($_POST);
         //print_r($_FILES);
         $isSave = true;
 
@@ -57,20 +57,23 @@ class QuotationController extends Controller
         $transaction = $connection->beginTransaction();
 
         $supervisor_name = $_POST['supervisor_name'];
-        $ref = $_POST['ref'];
         $user_id = $_POST['user_id'];
         $status = $_POST['status'];
         $template_ref = $_POST['template_ref'];
         $company_id = $_POST['company_id'];
         $client_company_id = $_POST['client_company_id'];
         $project_name = $_POST['project_name'];
+        $project_name_header = $_POST['project_name_header'];
         $po_no = $_POST['po_no'];
         $date = $_POST['date'];
         $grand_total = $_POST['grand_total'];
         $show_section_amount = $_POST['show_section_amount'];
-        $note = $_POST['note'];
+        $note_up = $_POST['note_up'];
+        $note_down = $_POST['note_down'];
         $results = $_POST['section_name'];
         $file_name_temp = '';
+
+        $ref = Yii::$app->mycomponent->generateQuotationRef('Ice9','Quotation');
 
         if($_FILES['file']['size'][0] != 0){
 
@@ -93,8 +96,6 @@ class QuotationController extends Controller
 
             }
             $f = explode("|",$file_name_temp);
-
-
 
         }
 
@@ -131,6 +132,7 @@ class QuotationController extends Controller
 
             $model->ref = $ref;
             $model->project_name = $project_name;
+            $model->project_name_header = $project_name_header;
             $model->company_id = $company_id;
             $model->client_company_id = $client_company_id;
             $model->amount = $grand_total;
@@ -141,7 +143,9 @@ class QuotationController extends Controller
             $model->supervisor_name = $supervisor_name;
             $model->show_section_amount = $show_section_amount;
             $model->file_name = $file_name_temp;
-            $model->note = $note;
+            $model->note_up = $note_up;
+            $model->note_down = $note_down;
+            $model->template_ref = $template_ref;
             $model->created_time = date('Y-m-d H:i:s');
 
             if(!$model->save()) {
@@ -169,118 +173,7 @@ class QuotationController extends Controller
     public function actionFormUpdate()
     {
 
-        //print_r($_FILES);
-        //print_r($_FILES);
-        $isSave = true;
-
-        $connection = \Yii::$app->db;
-        $transaction = $connection->beginTransaction();
-
-        $supervisor_name = $_POST['supervisor_name'];
-        $ref = $_POST['ref'];
-        $user_id = $_POST['user_id'];
-        $status = $_POST['status'];
-        $template_ref = $_POST['template_ref'];
-        $company_id = $_POST['company_id'];
-        $client_company_id = $_POST['client_company_id'];
-        $project_name = $_POST['project_name'];
-        $po_no = $_POST['po_no'];
-        $date = $_POST['date'];
-        $grand_total = $_POST['grand_total'];
-        $show_section_amount = $_POST['show_section_amount'];
-        $note = $_POST['note'];
-        $results = $_POST['section_name'];
-        $file_name_temp = '';
-
-        if($_FILES['file']['size'][0] != 0){
-
-            $files = UploadedFile::getInstancesByName('file');
-
-            foreach($files as $key=>$file){
-
-                $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $file_name = 'ARC'.date('Ymdhis').$key.'.'.$ext;
-
-                if(!$file->saveAs('uploads/'.$file_name)){
-                    $isSave = false;
-                }
-
-                if($key ==0){
-                    $file_name_temp .= $file_name;
-                }else{
-                    $file_name_temp .= "|".$file_name;
-                }
-
-            }
-            $f = explode("|",$file_name_temp);
-
-
-
-        }
-
-        try{
-
-            foreach($results as $key=>$value){
-                $section_name = $value;
-                $field_names = $_POST[$section_name."_field_names"];
-                $details = $_POST[$section_name."_details"];
-                $costs = $_POST[$section_name."_costs"];
-                $units = $_POST[$section_name."_units"];
-                $total = $_POST[$section_name."_total"];
-
-                foreach($field_names as $key=>$value){
-
-                    $model = QuationRef::find()->where;
-
-                    $model->quotation_ref = $ref;
-                    $model->template_ref = $template_ref;
-                    $model->section = $section_name;
-                    $model->field_name = $field_names[$key];
-                    $model->details = $details[$key];
-                    $model->cost_day = $costs[$key];
-                    $model->units = $units[$key];
-                    $model->total = $total[$key];
-
-                    if(!$model->save()) {
-                        $isSave = false;
-                    }
-                }
-            }
-
-            $model = new Quotation();
-
-            $model->ref = $ref;
-            $model->project_name = $project_name;
-            $model->company_id = $company_id;
-            $model->client_company_id = $client_company_id;
-            $model->amount = $grand_total;
-            $model->po_no = $po_no;
-            $model->date = date('Y-m-d', strtotime(str_replace('-', '/', $date)));
-            $model->status = $status;
-            $model->user_id = $user_id;
-            $model->supervisor_name = $supervisor_name;
-            $model->show_section_amount = $show_section_amount;
-            $model->file_name = $file_name_temp;
-            $model->note = $note;
-            $model->created_time = date('Y-m-d H:i:s');
-
-            if(!$model->save()) {
-                $isSave = false;
-            }
-
-
-            if($isSave) {
-                $transaction->commit();
-                Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
-                return $this->redirect('create-quotation');
-            }else{
-                Yii::$app->getSession()->setFlash('error', 'An error occurred during submit process, Please submit again');
-                return $this->redirect('create-quotation');
-            }
-
-        }catch (Exception $e){
-            $transaction->rollback();
-        }
+        print_r($_POST);
 
     }
 
@@ -292,7 +185,8 @@ class QuotationController extends Controller
         return $this->render('create-quotation', [
             'section' => $section,
             'model' => $model,
-            'id'=>12
+            'id'=>12,
+            'user_id'=>1,
         ]);
 
 
@@ -323,7 +217,8 @@ class QuotationController extends Controller
     public function actionTest()
     {
         $company = 'Ice9';
-        echo Yii::$app->mycomponent->generateQuotationRef($company);
+        $type = 'Quotation';
+        echo Yii::$app->mycomponent->generateQuotationRef($company,$type);
        // Yii::$app->mycomponent->welcome();
 
     }

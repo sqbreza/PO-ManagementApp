@@ -56,21 +56,10 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
     </div>
 </div>-->
 
-<div class="row">
-    <div class="form-group">
-        <div class="col-sm-2"><label  class="form-control">User ID : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="user_id" /></div>
 
-    </div>
-</div>
+    <input type="hidden" class="form-control" name="template_ref" value="<?= $id;?>" />
+    <input type="hidden" class="form-control" name="user_id" value="<?= $user_id;?>" />
 
-<div class="row">
-    <div class="form-group">
-        <div class="col-sm-2"><label  class="form-control">Template ref ID : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="template_ref" /></div>
-
-    </div>
-</div>
 
 <div class="row">
     <div class="form-group">
@@ -118,7 +107,7 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation For : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="project_name"/></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="project_name" id="project_name"/></div>
 
     </div>
 </div>
@@ -126,7 +115,7 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation Header : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="project_name"/></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="project_name_header" id="project_name_header"/></div>
 
     </div>
 </div>

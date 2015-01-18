@@ -16,11 +16,11 @@ $('body').on('click', '.add', function (e) {
 });*/
 
 
-/*
-$( ".addSection" ).on('keyup','.costs',function() {
-    console.log("aloo");
+
+$( "#project_name" ).on('keyup',function() {
+    $('#project_name_header').val($('#project_name').val());
 });
-*/
+
 
 $( ".addSection" ).on('keyup','.costs',function() {
     costs = $(this).parents('.eachLine').find('.costs').val();
