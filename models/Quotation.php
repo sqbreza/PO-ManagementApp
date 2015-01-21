@@ -21,7 +21,6 @@ use Yii;
  * @property string $supervisor_name
  * @property integer $show_section_amount
  * @property string $template_ref
- * @property string $file_name
  * @property string $note_up
  * @property string $note_down
  * @property string $created_time
@@ -50,7 +49,7 @@ class Quotation extends \yii\db\ActiveRecord
             [['amount'], 'number'],
             [['date', 'created_time'], 'safe'],
             [['note_up', 'note_down'], 'string'],
-            [['ref', 'project_name', 'project_name_header', 'po_no', 'status', 'template_ref', 'file_name'], 'string', 'max' => 255],
+            [['ref', 'project_name', 'project_name_header', 'po_no', 'status', 'template_ref'], 'string', 'max' => 255],
             [['supervisor_name'], 'string', 'max' => 11]
         ];
     }
@@ -75,7 +74,6 @@ class Quotation extends \yii\db\ActiveRecord
             'supervisor_name' => Yii::t('app', 'Supervisor Name'),
             'show_section_amount' => Yii::t('app', 'Show Section Amount'),
             'template_ref' => Yii::t('app', 'Template Ref'),
-            'file_name' => Yii::t('app', 'File Name'),
             'note_up' => Yii::t('app', 'Note Up'),
             'note_down' => Yii::t('app', 'Note Down'),
             'created_time' => Yii::t('app', 'Created Time'),

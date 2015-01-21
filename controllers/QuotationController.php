@@ -2,15 +2,18 @@
 
 namespace app\controllers;
 
+use app\models\QuotationRef;
 use Yii;
 use app\models\Quotation;
 use app\models\TemplateFields;
 use app\models\QuationRef;
+use app\models\FileArchive;
 use app\models\QuotationSearch;
 use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 use yii\web\UploadedFile;
 
@@ -71,35 +74,47 @@ class QuotationController extends Controller
         $note_up = $_POST['note_up'];
         $note_down = $_POST['note_down'];
         $results = $_POST['section_name'];
-        $file_name_temp = '';
 
         $ref = Yii::$app->mycomponent->generateQuotationRef('Ice9','Quotation');
 
-        if($_FILES['file']['size'][0] != 0){
 
-            $files = UploadedFile::getInstancesByName('file');
-
-            foreach($files as $key=>$file){
-
-                $ext = pathinfo($file, PATHINFO_EXTENSION);
-                $file_name = 'ARC'.date('Ymdhis').$key.'.'.$ext;
-
-                if(!$file->saveAs('uploads/'.$file_name)){
-                    $isSave = false;
-                }
-
-                if($key ==0){
-                    $file_name_temp .= $file_name;
-                }else{
-                    $file_name_temp .= "|".$file_name;
-                }
-
-            }
-            $f = explode("|",$file_name_temp);
-
-        }
 
         try{
+
+
+            if($_FILES['file']['size'][0] != 0){
+
+                $files = UploadedFile::getInstancesByName('file');
+
+                foreach($files as $key=>$file){
+
+                    $ext = pathinfo($file, PATHINFO_EXTENSION);
+                    $file_name = 'ARC_Q'.date('Ymdhis').$key.'.'.$ext;
+
+                    if(!$file->saveAs('uploads/'.$file_name)){
+                        $isSave = false;
+                    }
+
+                    /*if($key ==0){
+                        $file_name_temp .= $file_name;
+                    }else{
+                        $file_name_temp .= "|".$file_name;
+                    }*/
+
+                    $model = new FileArchive();
+
+                    $model->ref = $ref;
+                    $model->file_name = $file_name;
+                    $model->type = "Quotation";
+
+                    if(!$model->save()) {
+                        $isSave = false;
+                    }
+
+                }
+
+
+            }
 
             foreach($results as $key=>$value){
                 $section_name = $value;
@@ -111,9 +126,9 @@ class QuotationController extends Controller
 
                 foreach($field_names as $key=>$value){
 
-                    $model = new QuationRef();
+                    $model = new QuotationRef();
 
-                    $model->quotation_ref = $ref;
+                    $model->ref = $ref;
                     $model->template_ref = $template_ref;
                     $model->section = $section_name;
                     $model->field_name = $field_names[$key];
@@ -142,7 +157,6 @@ class QuotationController extends Controller
             $model->user_id = $user_id;
             $model->supervisor_name = $supervisor_name;
             $model->show_section_amount = $show_section_amount;
-            $model->file_name = $file_name_temp;
             $model->note_up = $note_up;
             $model->note_down = $note_down;
             $model->template_ref = $template_ref;
@@ -166,14 +180,175 @@ class QuotationController extends Controller
             $transaction->rollback();
         }
 
+
+
     }
 
 
 
     public function actionFormUpdate()
     {
+        //print_r($_POST);
 
-        print_r($_POST);
+        $isSave = true;
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+        $supervisor_name = $_POST['supervisor_name'];
+        $model_id = $_POST['model_id'];
+        $user_id = $_POST['user_id'];
+        $status = $_POST['status'];
+        $template_ref = $_POST['template_ref'];
+        $company_id = $_POST['company_id'];
+        $client_company_id = $_POST['client_company_id'];
+        $project_name = $_POST['project_name'];
+        $project_name_header = $_POST['project_name_header'];
+        $po_no = $_POST['po_no'];
+        $date = $_POST['date'];
+        $grand_total = $_POST['grand_total'];
+        $show_section_amount = $_POST['show_section_amount'];
+        $note_up = $_POST['note_up'];
+        $note_down = $_POST['note_down'];
+        $results = $_POST['section_name'];
+
+        $ref = $_POST['ref'];
+
+
+
+        try{
+
+            if($_FILES['file']['size'][0] != 0){
+
+                $files = UploadedFile::getInstancesByName('file');
+
+                foreach($files as $key=>$file){
+
+                    $ext = pathinfo($file, PATHINFO_EXTENSION);
+                    $file_name = 'ARC_Q'.date('Ymdhis').$key.'.'.$ext;
+
+                    if(!$file->saveAs('uploads/'.$file_name)){
+                        $isSave = false;
+                    }
+
+
+                    $model = new FileArchive();
+
+                    $model->ref = $ref;
+                    $model->file_name = $file_name;
+                    $model->type = "Quotation";
+
+                    if(!$model->save()) {
+                        $isSave = false;
+                    }
+
+                }
+
+
+            }
+
+            QuotationRef::deleteAll('ref = :ref', [':ref' => $ref]);
+
+            foreach($results as $key=>$value){
+                $section_name = $value;
+                $field_names = $_POST[$section_name."_field_names"];
+                $details = $_POST[$section_name."_details"];
+                $costs = $_POST[$section_name."_costs"];
+                $units = $_POST[$section_name."_units"];
+                $total = $_POST[$section_name."_total"];
+
+                foreach($field_names as $key=>$value){
+
+                    $model = new QuotationRef();
+
+                    $model->ref = $ref;
+                    $model->template_ref = $template_ref;
+                    $model->section = $section_name;
+                    $model->field_name = $field_names[$key];
+                    $model->details = $details[$key];
+                    $model->cost_day = $costs[$key];
+                    $model->units = $units[$key];
+                    $model->total = $total[$key];
+
+                    if(!$model->save()) {
+                        $isSave = false;
+                    }
+                }
+            }
+
+            $model = Quotation::findOne($model_id);
+
+            $model->ref = $ref;
+            $model->project_name = $project_name;
+            $model->project_name_header = $project_name_header;
+            $model->company_id = $company_id;
+            $model->client_company_id = $client_company_id;
+            $model->amount = $grand_total;
+            $model->po_no = $po_no;
+            $model->date = date('Y-m-d', strtotime(str_replace('-', '/', $date)));
+            $model->status = $status;
+            $model->user_id = $user_id;
+            $model->supervisor_name = $supervisor_name;
+            $model->show_section_amount = $show_section_amount;
+            $model->note_up = $note_up;
+            $model->note_down = $note_down;
+            $model->template_ref = $template_ref;
+            $model->created_time = date('Y-m-d H:i:s');
+
+
+
+            if(!$model->save()) {
+                $isSave = false;
+            }
+
+
+            if($isSave) {
+
+                $transaction->commit();
+                Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
+                return $this->redirect('view-quotation?id='.$model_id);
+            }else{
+
+                Yii::$app->getSession()->setFlash('error', 'An error occurred during submit process, Please submit again');
+                return $this->redirect('view-quotation?id='.$model_id);
+            }
+
+        }catch (Exception $e){
+            $transaction->rollback();
+        }
+
+
+
+    }
+
+    public function actionDeleteFile()
+    {
+         $file_name = $_GET['file_name'];
+         $id = $_GET['id'];
+
+        if (!unlink('uploads/'.$file_name)) {
+            return false;
+        }else{
+            if(FileArchive::deleteAll('file_name = :file_name', [':file_name' => $file_name])){
+                return $this->redirect(Yii::getAlias('@web').'/quotation/view-quotation?id='.$id);
+            }
+        }
+
+    }
+
+    public function actionDeleteFiles()
+    {
+
+        $file_name = $_POST['filename'];
+        $ref = $_POST['ref'];
+        if (!unlink('uploads/'.$file_name)) {
+            return false;
+        }else{
+            FileArchive::deleteAll('file_name=:file_name',['file_name'=>$file_name]);
+            $files = FileArchive::find()->where('ref=:ref',['ref'=>$ref])->asArray()->all();
+            echo json_encode($files);
+            }
+
 
     }
 
