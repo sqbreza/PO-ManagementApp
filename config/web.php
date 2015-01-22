@@ -16,20 +16,20 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
+        /*'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-        ],
+        ],*/
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
+        /*'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
-        ],
+        ],*/
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -59,7 +59,25 @@ $config = [
         'mycomponent' => [
             'class' => 'app\components\MyComponent',
         ],
+        'user' => [
+            'class' => 'amnah\yii2\user\components\User',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => true,
+            'messageConfig' => [
+                'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
+                'charset' => 'UTF-8',
+            ]
+        ],
+
         'db' => require(__DIR__ . '/db.php'),
+    ],
+    'modules' => [
+        'user' => [
+            'class' => 'amnah\yii2\user\Module',
+            // set custom module properties here ...
+        ],
     ],
     'params' => $params,
 ];
