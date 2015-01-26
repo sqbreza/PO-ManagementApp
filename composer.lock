@@ -55,12 +55,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amnah/yii2-user.git",
-                "reference": "ce1357ce5cf65e9bd05f78a6d48aded37246e03b"
+                "reference": "158dc8ec7c90d2b322310a2a12e42e564dcf1075"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amnah/yii2-user/zipball/ce1357ce5cf65e9bd05f78a6d48aded37246e03b",
-                "reference": "ce1357ce5cf65e9bd05f78a6d48aded37246e03b",
+                "url": "https://api.github.com/repos/amnah/yii2-user/zipball/158dc8ec7c90d2b322310a2a12e42e564dcf1075",
+                "reference": "158dc8ec7c90d2b322310a2a12e42e564dcf1075",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2014-11-28 21:47:37"
+            "time": "2015-01-24 14:31:59"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -404,16 +404,16 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v4.1.5",
+            "version": "v4.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "05ef198a75c472c53a4c6068bd0a0253bca62d29"
+                "reference": "6e47ad45ae87a196bf10f3436d570283249992e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/05ef198a75c472c53a4c6068bd0a0253bca62d29",
-                "reference": "05ef198a75c472c53a4c6068bd0a0253bca62d29",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/6e47ad45ae87a196bf10f3436d570283249992e9",
+                "reference": "6e47ad45ae87a196bf10f3436d570283249992e9",
                 "shasum": ""
             },
             "type": "library",
@@ -448,7 +448,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2015-01-12 03:57:11"
+            "time": "2015-01-22 07:25:09"
         },
         {
             "name": "kartik-v/mpdf",

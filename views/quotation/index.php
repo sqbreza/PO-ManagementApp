@@ -25,21 +25,29 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'ref',
             'project_name',
-            'quoted_to',
+            'client_company_id',
             'amount',
             // 'vat',
             // 'total',
             // 'date',
-            // 'po_no',
-            // 'status',
+             'po_no',
+             'status',
             // 'client_company_id',
             // 'user_id',
             // 'supervisor_name',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'Edit/view',
+                'format' => 'raw',
+                'value' => function ($model, $key, $index) {
+                    return Html::a('Edit/view', ['quotation/view-quotation', 'id' => $model->id]);
+                },
+            ],
+
+            //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

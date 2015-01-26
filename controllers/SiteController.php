@@ -9,6 +9,8 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use kartik\mpdf\Pdf;
+use app\models\Quotation;
+use app\models\QuotationRef;
 
 class SiteController extends Controller
 {
@@ -55,12 +57,20 @@ class SiteController extends Controller
 
 
 
-    public function actionQuotationIce9() {
+    public function actionQpdf($id) {
+
+        $company = Quotation::find()->where('id = :id',['id'=>$id,])->one();
+
+
+        $quotation = QuotationRef::find()->where('ref = :ref',['ref'=>$company->ref,])->all();
 
         $header = "<div><div style='float: left; width: 200px; font-size: 32px;' class='text-muted'>QUOTATION</div><div style='float: left;'><img src='../web/images/ice9.png' width='60' style='float:right;'/></div></div>";
         $footer = "<div style='float:left; width: 100%; text-align: center;'> ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer </div>";
         $watermark = "WATERMARK";
-        $htmlContent = $this->renderPartial('_reportView');
+        $htmlContent = $this->renderPartial('_reportView',[
+            'company'=>$company,
+            'quotation'=>$quotation
+        ]);
         $pdf = Yii::$app->pdf;
         $mpdf = $pdf->api; // fetches mpdf api
         $mpdf->SetHTMLHeader ($header);

@@ -312,9 +312,12 @@ foreach($section as $value){
 <div class="row">
     <div class="form-group">
         <div class="col-sm-5"></div>
-        <div class="col-sm-2">
+        <div class="col-sm-5">
             <button class=" btn btn-success" id="update"> Update </button>
+            <a href="<?=Yii::getAlias('@web')?>/site/qpdf/<?=$model->id?>" target="_blank" class="btn btn-danger">PDF</a>
         </div>
+
+
     </div>
 </div>
 

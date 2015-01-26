@@ -1,12 +1,6 @@
 <?php
 
-use app\models\Quotation;
-use app\models\QuationRef;
 
-
-
-$company = Quotation::find()->all();
-$quotation = QuationRef::find()->all();
 
 
 ?>

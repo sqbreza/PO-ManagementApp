@@ -352,7 +352,7 @@ class QuotationController extends Controller
 
     }
 
-    public function actionCreateQuotation()
+    public function actionCreateQuotation($id)
     {
        // $models = TemplateFields::findAll(['template_id'=>12]);
         $section = TemplateFields::find()->where(['template_id'=>12])->groupBy('section')->orderBy('id')->asArray()->all();
@@ -360,8 +360,8 @@ class QuotationController extends Controller
         return $this->render('create-quotation', [
             'section' => $section,
             'model' => $model,
-            'id'=>12,
-            'user_id'=>1,
+            'id'=>$id,
+            'user_id'=>Yii::$app->user->getId(),
         ]);
 
 

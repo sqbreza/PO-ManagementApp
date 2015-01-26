@@ -8,10 +8,19 @@ use app\models\TemplateSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\HttpException;
 
 /**
  * TemplateController implements the CRUD actions for Template model.
  */
+
+
+
+if (!Yii::$app->user->can("moderate")) {
+    throw new HttpException(403, 'You are not allowed to perform this action.');
+}
+
+
 class TemplateController extends Controller
 {
     public function behaviors()
@@ -39,6 +48,21 @@ class TemplateController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+    public function actionChooseTemplate()
+    {
+        $searchModel = new TemplateSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('choose-template', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTemplate()
+    {
+       return $this->render('template');
     }
 
     /**

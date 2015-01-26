@@ -19,7 +19,7 @@ class QuotationSearch extends Quotation
     {
         return [
             [['id', 'amount', 'vat', 'total', 'client_company_id', 'user_id'], 'integer'],
-            [['ref', 'project_name', 'quoted_to', 'date', 'po_no', 'status', 'supervisor_name'], 'safe'],
+            [['ref', 'project_name', 'date', 'po_no', 'status', 'supervisor_name'], 'safe'],
         ];
     }
 
@@ -63,7 +63,6 @@ class QuotationSearch extends Quotation
 
         $query->andFilterWhere(['like', 'ref', $this->ref])
             ->andFilterWhere(['like', 'project_name', $this->project_name])
-            ->andFilterWhere(['like', 'quoted_to', $this->quoted_to])
             ->andFilterWhere(['like', 'po_no', $this->po_no])
             ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'supervisor_name', $this->supervisor_name]);

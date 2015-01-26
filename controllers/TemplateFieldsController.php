@@ -9,6 +9,12 @@ use app\models\TemplateFieldsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\HttpException;
+
+
+if (!Yii::$app->user->can("moderate")) {
+    throw new HttpException(403, 'You are not allowed to perform this action.');
+}
 
 /**
  * TemplateFieldsController implements the CRUD actions for TemplateFields model.

@@ -105,3 +105,19 @@ a.desc:after {
 .ice9QuotationHeader{
     background: url('../images/ice9.png');
 }
+
+.home_item{
+    height: 200px;
+    background:#f5f5f5;
+    margin: 2% 0 0 2%;
+
+}
+
+.home_item:hover{
+    background: ghostwhite;
+}
+
+.home_link{
+    margin-top: 30%;
+    font-size: 22px;
+}

@@ -88,6 +88,8 @@ class Quotation extends \yii\db\ActiveRecord
         return $this->hasOne(Clients::className(), ['id' => 'client_company_id']);
     }
 
+
+
     /**
      * @return \yii\db\ActiveQuery
      */
