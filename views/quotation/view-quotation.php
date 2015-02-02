@@ -67,12 +67,20 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 <input type="hidden" class="form-control" name="model_id" value="<?= $model->id;?>" />
 <input type="hidden" class="form-control" name="ref" value="<?= $model->ref;?>" />
 
-
+<?php
+$green = "style='background:limegreen'";
+$red = "style='background:orange'";
+?>
 
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Status : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="status" value ="<?= $model->status;?>"/></div>
+        <!--<div class="col-sm-8"><input type="text" class="form-control" name="status" value ="<?/*= $model->status;*/?>"/></div>-->
+        <div class="col-sm-2"><label class="form-control text-center" <?=($model->status=='Approved')?$green:$red?>> <?= $model->status;?></label></div>
+        <div class="col-sm-6"><select class="form-control" name="status">
+                <option value="Pending"> Pending </option>
+                <option value="Approved"> Approved </option>
+            </select></div>
 
     </div>
 </div>

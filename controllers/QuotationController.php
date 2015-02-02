@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\QuotationRef;
+use app\models\RefGenerator;
 use Yii;
 use app\models\Quotation;
 use app\models\TemplateFields;
@@ -170,8 +171,11 @@ class QuotationController extends Controller
             if($isSave) {
                 $transaction->commit();
                 Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
-                return $this->redirect('create-quotation');
+                return $this->redirect('index');
             }else{
+                $model = new RefGenerator();
+                $model->find()->orderBy(['id'=>SORT_DESC])->one();
+                $model->deleteAll(['id=:id','id'=>$model->id]);
                 Yii::$app->getSession()->setFlash('error', 'An error occurred during submit process, Please submit again');
                 return $this->redirect('create-quotation');
             }
@@ -188,7 +192,7 @@ class QuotationController extends Controller
 
     public function actionFormUpdate()
     {
-        //print_r($_POST);
+        print_r($_POST);
 
         $isSave = true;
 
