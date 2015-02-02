@@ -49,7 +49,7 @@ $type= ['Quotation'=>'Quotation','Bill'=>'Bill'];
             </select></div>
     </div><br><br>
 
-    <button id="addSection" class="btn btn-primary">Add Section</button><br><br>
+    <button id="addSection" class="btn btn-primary" style="margin-left: 15px;">Add Section</button><br><br>
 
     <div class="container" id="addSectionDiv">
         <div style="border:1px solid grey; border-radius:5px;">

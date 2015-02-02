@@ -177,11 +177,12 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 
 <?php
 foreach($section as $value){
-    $result =TemplateFields::find()->where(['template_id'=>12,'section'=>$value['section']])->orderBy('id')->asArray()->all();
+    $sectionValue = preg_replace('/\s+/', '', $value['section']);
+    $result =TemplateFields::find()->where(['template_id'=>$id,'section'=>$value['section']])->orderBy('id')->asArray()->all();
     ?>
     <div class="row">
         <h4> <?= $value['section'];?></h4>
-        <div class="addSection" id="<?= $value['section'];?>">
+        <div class="addSection" id="<?= $sectionValue;?>">
             <input type="hidden" name="section_name[]" value="<?= $value['section'];?>">
             <?php
             foreach($result as $val){
@@ -190,11 +191,11 @@ foreach($section as $value){
                 <div class="addLine">
                     <div class="form-group eachLine">
 
-                        <div class="col-sm-3"><input type="text" name="<?= $value['section'];?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
-                        <div class="col-sm-3"><input type="text" name="<?= $value['section'];?>_details[]" class="form-control" /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $value['section'];?>_costs[]" class="costs form-control" /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $value['section'];?>_units[]" class="units form-control" /></div>
-                        <div class="col-sm-2"><input type="text" name="<?= $value['section'];?>_total[]" class="total form-control" /></div>
+                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
+                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_details[]" class="form-control" /></div>
+                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" /></div>
+                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" /></div>
+                        <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" /></div>
                         <div class="col-sm-2">
                             <button class="btn btn-sm btn-danger delete"> Delete </button>
                             <button class="btn btn-sm btn-success add"> Add </button>
@@ -206,7 +207,7 @@ foreach($section as $value){
 
             <div class="row">
                 <div class="col-sm-8"></div>
-                <div class="col-sm-2"><input type="text" name="<?= $value['section'];?>_sub_total" class="<?= $value['section'];?> form-control section_total" /></div>
+                <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_sub_total" class="<?= $sectionValue;?> form-control section_total" /></div>
             </div>
 
 

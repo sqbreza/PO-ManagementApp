@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Clients;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\QuotationSearch */
@@ -15,9 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <!--<p>
-        <?/*= Html::a('Create Quotation', ['create'], ['class' => 'btn btn-success']) */?>
-    </p>-->
+    <p>
+        <?= Html::a('Create Quotation', ['template/choose-template'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -27,8 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'id',
             'ref',
+            'company.company_name',
             'project_name',
-            'client_company_id',
+            //'client_company_id',
+            'clients.client_name',
             'amount',
             // 'vat',
             // 'total',
@@ -39,10 +42,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'user_id',
             // 'supervisor_name',
 
+
+
             [
-                'attribute' => 'Edit/view',
+                'attribute' => '',
                 'format' => 'raw',
-                'value' => function ($model, $key, $index) {
+                'value' => function ($model) {
                     return Html::a('Edit/view', ['quotation/view-quotation', 'id' => $model->id]);
                 },
             ],

@@ -11,9 +11,6 @@ $('body').on('click', '.add', function (e) {
 });
 
 
-/*$('body').on('click', '.costs', function (e) {
-
-});*/
 
 
 
@@ -22,17 +19,20 @@ $( "#project_name" ).on('keyup',function() {
 });
 
 
-$( ".addSection" ).on('keyup','.costs',function() {
+$( ".addSection" ).on('keyup','.costs,.units',function() {
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();
     total = $(this).parents('.eachLine').find('.total').val(costs*units);
     section = $(this).parents('.addSection');
     section_id = section.attr('id');
+
     var sum = 0;
     $('#'+section_id+' .total').each(function() {
         sum += Number($(this).val());
     });
     $('.'+section_id).val(sum);
+
+
 
     var sum_ = 0;
     $('.section_total').each(function() {
@@ -50,6 +50,7 @@ $( ".addSection" ).on('keyup','.costs',function() {
 });
 
 
+/*
 $( ".addSection" ).on('keyup','.units',function() {
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();
@@ -84,6 +85,7 @@ $('#sum_total').keyup(function(e){
     var bd = num2words.numberToWords($(this).val());
     $('#amount_in_words').val(bd);
 });
+*/
 
 
 

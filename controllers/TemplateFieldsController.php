@@ -65,6 +65,17 @@ class TemplateFieldsController extends Controller
         return $this->render('create-template');
     }
 
+    public function actionViewTemplate($id)
+    {
+        $section = TemplateFields::find()->where(['template_id'=>$id])->groupBy('section')->orderBy('id')->asArray()->all();
+        $model = TemplateFields::find()->where(['template_id'=>$id])->orderBy('id')->asArray()->all();
+
+        return $this->render('view-template',[
+            'section' => $section,
+            'id' => $id,
+        ]);
+    }
+
     public function actionForm()
     {
         $isSave = true;
@@ -117,6 +128,70 @@ class TemplateFieldsController extends Controller
         }
 
         return $this->redirect(['template', 'id' => $id]);
+    }
+
+    public function actionUpdateForm()
+    {
+        $isSave = true;
+
+        print_r($_POST);
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+
+        $results = $_POST['section_name'];
+        $company_id = $_POST['company_id'];
+        $template_name = $_POST['template_name'];
+        $type = $_POST['type'];
+        $id = $_POST['id'];
+
+        try{
+
+            $model = Template::findOne($id);
+            $model->name = $template_name;
+            $model->company_id = $company_id;
+            $model->type = $type;
+            if(!$model->save()) {
+                $isSave = false;
+            }
+
+            if(!TemplateFields::deleteAll('template_id = :id', ['id' => $id])){
+                $isSave = false;
+            }
+
+
+
+
+
+            foreach($results as $key=>$value){
+                $section_name = $value;
+                $field_names = $_POST["section".$key."_field_name"];
+
+                foreach($field_names as $key=>$value){
+                    $model = new TemplateFields();
+                    $field_name = $value;
+                    $model->template_id=$id;
+                    $model->section=$section_name;
+                    $model->field_name=$field_name;
+                    $model->template_type=$type;
+
+                    if(!$model->save()) {
+                        $isSave = false;
+                    }
+
+                }
+            }
+            if($isSave) {
+                $transaction->commit();
+            }
+
+        } catch(Exception $e) {
+            $transaction->rollback();
+
+        }
+
+        return $this->redirect(['template/index',]);
+
     }
 
     /**

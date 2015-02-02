@@ -53,28 +53,64 @@ class QuotationController extends Controller
     public function actionForm()
     {
 
-        print_r($_POST);
-        //print_r($_FILES);
+        //print_r($_POST);
+
         $isSave = true;
 
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
-        $supervisor_name = $_POST['supervisor_name'];
         $user_id = $_POST['user_id'];
         $status = $_POST['status'];
         $template_ref = $_POST['template_ref'];
         $company_id = $_POST['company_id'];
         $client_company_id = $_POST['client_company_id'];
-        $project_name = $_POST['project_name'];
-        $project_name_header = $_POST['project_name_header'];
-        $po_no = $_POST['po_no'];
         $date = $_POST['date'];
-        $grand_total = $_POST['grand_total'];
         $show_section_amount = $_POST['show_section_amount'];
-        $note_up = $_POST['note_up'];
-        $note_down = $_POST['note_down'];
         $results = $_POST['section_name'];
+        if(isset($_POST['supervisor_name'])){
+            $supervisor_name = $_POST['supervisor_name'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Supervisor name must not be empty!');
+            return $this->redirect('create-quotation');
+        }
+
+        if(isset($_POST['project_name'])){
+            $project_name = $_POST['project_name'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Project name must not be empty!');
+            return $this->redirect('create-quotation');
+        }
+        if(isset($_POST['project_name_header'])){
+            $project_name_header = $_POST['project_name_header'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Project name header must not be empty!');
+            return $this->redirect('create-quotation');
+        }
+        if(isset($_POST['po_no'])){
+            $po_no = $_POST['po_no'];
+        }else{
+            $po_no = '';
+        }
+
+        if(isset($_POST['grand_total'])){
+            $grand_total = $_POST['grand_total'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Grand Total must not be empty!');
+            return $this->redirect('create-quotation');
+        }
+
+
+        if(isset($_POST['note_up'])){
+            $note_up = $_POST['note_up'];
+        }else{
+            $note_up = '';
+        }
+        if(isset($_POST['note_down'])){
+            $note_down = $_POST['note_down'];
+        }else{
+            $note_down = '';
+        }
 
         $ref = Yii::$app->mycomponent->generateQuotationRef('Ice9','Quotation');
 
@@ -96,11 +132,6 @@ class QuotationController extends Controller
                         $isSave = false;
                     }
 
-                    /*if($key ==0){
-                        $file_name_temp .= $file_name;
-                    }else{
-                        $file_name_temp .= "|".$file_name;
-                    }*/
 
                     $model = new FileArchive();
 
@@ -118,7 +149,9 @@ class QuotationController extends Controller
             }
 
             foreach($results as $key=>$value){
-                $section_name = $value;
+
+                $actual_section_name =  $value;
+                $section_name =  preg_replace('/\s+/', '', $value);
                 $field_names = $_POST[$section_name."_field_names"];
                 $details = $_POST[$section_name."_details"];
                 $costs = $_POST[$section_name."_costs"];
@@ -131,7 +164,7 @@ class QuotationController extends Controller
 
                     $model->ref = $ref;
                     $model->template_ref = $template_ref;
-                    $model->section = $section_name;
+                    $model->section = $actual_section_name;
                     $model->field_name = $field_names[$key];
                     $model->details = $details[$key];
                     $model->cost_day = $costs[$key];
@@ -165,13 +198,20 @@ class QuotationController extends Controller
 
             if(!$model->save()) {
                 $isSave = false;
+            }else{
+                $mId =$model->id;
+
+
+
             }
+
 
 
             if($isSave) {
                 $transaction->commit();
                 Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
-                return $this->redirect('index');
+                return $this->redirect('view-quotation?id='.$mId);
+                //return $this->redirect('create-quotation');
             }else{
                 $model = new RefGenerator();
                 $model->find()->orderBy(['id'=>SORT_DESC])->one();
@@ -183,7 +223,6 @@ class QuotationController extends Controller
         }catch (Exception $e){
             $transaction->rollback();
         }
-
 
 
     }
@@ -199,24 +238,60 @@ class QuotationController extends Controller
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
-        $supervisor_name = $_POST['supervisor_name'];
         $model_id = $_POST['model_id'];
         $user_id = $_POST['user_id'];
         $status = $_POST['status'];
         $template_ref = $_POST['template_ref'];
         $company_id = $_POST['company_id'];
         $client_company_id = $_POST['client_company_id'];
-        $project_name = $_POST['project_name'];
-        $project_name_header = $_POST['project_name_header'];
-        $po_no = $_POST['po_no'];
         $date = $_POST['date'];
-        $grand_total = $_POST['grand_total'];
         $show_section_amount = $_POST['show_section_amount'];
-        $note_up = $_POST['note_up'];
-        $note_down = $_POST['note_down'];
         $results = $_POST['section_name'];
-
         $ref = $_POST['ref'];
+        if(isset($_POST['supervisor_name'])){
+            $supervisor_name = $_POST['supervisor_name'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Supervisor name must not be empty!');
+            return $this->redirect('view-quotation?id='.$model_id);
+        }
+
+        if(isset($_POST['project_name'])){
+            $project_name = $_POST['project_name'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Project name must not be empty!');
+            return $this->redirect('view-quotation?id='.$model_id);
+        }
+        if(isset($_POST['project_name_header'])){
+            $project_name_header = $_POST['project_name_header'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Project name header must not be empty!');
+            return $this->redirect('view-quotation?id='.$model_id);
+        }
+        if(isset($_POST['po_no'])){
+            $po_no = $_POST['po_no'];
+        }else{
+            $po_no = '';
+        }
+
+        if(isset($_POST['grand_total'])){
+            $grand_total = $_POST['grand_total'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Grand Total must not be empty!');
+            return $this->redirect('view-quotation?id='.$model_id);
+        }
+
+
+        if(isset($_POST['note_up'])){
+            $note_up = $_POST['note_up'];
+        }else{
+            $note_up = '';
+        }
+        if(isset($_POST['note_down'])){
+            $note_down = $_POST['note_down'];
+        }else{
+            $note_down = '';
+        }
+
 
 
 
@@ -251,10 +326,13 @@ class QuotationController extends Controller
 
             }
 
-            QuotationRef::deleteAll('ref = :ref', [':ref' => $ref]);
+            if(!QuotationRef::deleteAll('ref = :ref', ['ref' => $ref])){
+                $isSave = false;
+            }
 
             foreach($results as $key=>$value){
-                $section_name = $value;
+                $actual_section_name =  $value;
+                $section_name =  preg_replace('/\s+/', '', $value);
                 $field_names = $_POST[$section_name."_field_names"];
                 $details = $_POST[$section_name."_details"];
                 $costs = $_POST[$section_name."_costs"];
@@ -267,7 +345,7 @@ class QuotationController extends Controller
 
                     $model->ref = $ref;
                     $model->template_ref = $template_ref;
-                    $model->section = $section_name;
+                    $model->section = $actual_section_name;
                     $model->field_name = $field_names[$key];
                     $model->details = $details[$key];
                     $model->cost_day = $costs[$key];
@@ -359,8 +437,9 @@ class QuotationController extends Controller
     public function actionCreateQuotation($id)
     {
        // $models = TemplateFields::findAll(['template_id'=>12]);
-        $section = TemplateFields::find()->where(['template_id'=>12])->groupBy('section')->orderBy('id')->asArray()->all();
-        $model = TemplateFields::find()->where(['template_id'=>12])->orderBy('id')->asArray()->all();
+        $section = TemplateFields::find()->where(['template_id'=>$id])->groupBy('section')->orderBy('id')->asArray()->all();
+        $model = TemplateFields::find()->where(['template_id'=>$id])->orderBy('id')->asArray()->all();
+
         return $this->render('create-quotation', [
             'section' => $section,
             'model' => $model,

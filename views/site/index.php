@@ -11,19 +11,30 @@ $this->title = 'Ice9 Interactive';
         <div class="container" style="margin-left: 6%;">
 
 
-            <a href="template-fields/create-template">
+            <a href="template/index">
                 <div class="col-sm-3 home_item text-center text-info">
-                    <div class="home_link"> Create Template</div>
+                    <div class="home_link">Template</div>
                 </div>
             </a>
-            <a href="template/choose-template">
+            <!--<a href="template/choose-template">
                 <div class="col-sm-3 home_item text-center text-info">
                     <div class="home_link"> Create Quotation</div>
                 </div>
-            </a>
+            </a>-->
             <a href="quotation">
                 <div class="col-sm-3 home_item text-center text-info">
-                    <div class="home_link"> View/Edit Quotation</div>
+                    <div class="home_link">Quotation</div>
+                </div>
+            </a>
+
+            <a href="company/index">
+                <div class="col-sm-3 home_item text-center text-info">
+                    <div class="home_link">Company</div>
+                </div>
+            </a>
+            <a href="clients">
+                <div class="col-sm-3 home_item text-center text-info">
+                    <div class="home_link">Clients</div>
                 </div>
             </a>
             <!-- <a href="user/admin/create"><div class="col-sm-3 home_item text-center text-info"> <div class="home_link">Create User </div> </div></a>-->
@@ -37,12 +48,6 @@ $this->title = 'Ice9 Interactive';
                     <div class="home_link"> User Profile</div>
                 </div>
             </a>
-            <a href="">
-                <div class="col-sm-3 home_item text-center text-info">
-                    <div class="home_link"></div>
-                </div>
-            </a>
-
 
         </div>
 

@@ -52,3 +52,20 @@ $('#templateForm').on('click', '#formSubmit', function (e) {
 });
 
 
+$('#templateForm').on('click', '#formUpdate', function (e) {
+
+    var data = $('form').serialize();
+    $.ajax({
+        type     :'POST',
+        cache    : false,
+        data: data,
+        url  : 'update-form',
+        success  : function(response) {
+            console.log(response);
+        }
+    });
+
+
+});
+
+

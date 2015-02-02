@@ -56,7 +56,12 @@ class Template extends \yii\db\ActiveRecord
      */
     public function getQuationRefs()
     {
-        return $this->hasMany(QuationRef::className(), ['template_ref' => 'id']);
+        return $this->hasMany(QuationRef::className(), ['ref' => 'id']);
+    }
+
+    public function getCompany()
+    {
+        return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
 
     /**

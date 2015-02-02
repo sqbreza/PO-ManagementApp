@@ -50,7 +50,9 @@ class Quotation extends \yii\db\ActiveRecord
             [['date', 'created_time'], 'safe'],
             [['note_up', 'note_down'], 'string'],
             [['ref', 'project_name', 'project_name_header', 'po_no', 'status', 'template_ref'], 'string', 'max' => 255],
-            [['supervisor_name'], 'string', 'max' => 11]
+            [['supervisor_name'], 'string', 'max' => 11],
+
+
         ];
     }
 
@@ -83,12 +85,10 @@ class Quotation extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getClientCompany()
+    public function getClients()
     {
         return $this->hasOne(Clients::className(), ['id' => 'client_company_id']);
     }
-
-
 
     /**
      * @return \yii\db\ActiveQuery

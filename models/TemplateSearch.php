@@ -20,6 +20,7 @@ class TemplateSearch extends Template
         return [
             [['id', 'company_id'], 'integer'],
             [['name', 'type'], 'safe'],
+            [['company.company_name'],'safe'],
         ];
     }
 
@@ -32,6 +33,12 @@ class TemplateSearch extends Template
         return Model::scenarios();
     }
 
+    public function attributes()
+    {
+        // add related fields to searchable attributes
+        return array_merge(parent::attributes(), ['company.company_name',]);
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -42,10 +49,16 @@ class TemplateSearch extends Template
     public function search($params)
     {
         $query = Template::find();
+        $query->joinWith(['company']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['company.company_name'] = [
+            'asc' => ['company.company_name' => SORT_ASC],
+            'desc' => ['company.company_name' => SORT_DESC],
+        ];
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
@@ -57,7 +70,8 @@ class TemplateSearch extends Template
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'type', $this->type]);
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'company.company_name', $this->getAttribute('company.company_name')]);
 
         return $dataProvider;
     }
