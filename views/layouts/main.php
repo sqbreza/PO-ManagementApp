@@ -33,11 +33,11 @@ AppAsset::register($this);
                 ],
             ]);
 
+
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
-
-                   /* ['label' => 'Template', 'url' => ['/template/template']],
+                    /*['label' => 'Template', 'url' => ['/template/template']],
                     ['label' => 'About', 'url' => ['/site/about']],
                     ['label' => 'Contact', 'url' => ['/site/contact']],
                     ['label' => 'User', 'url' => ['/user']],*/
@@ -68,8 +68,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
+            <p class="pull-left">&copy; Ice9 Interactive <?= date('Y') ?></p>
         </div>
     </footer>
 

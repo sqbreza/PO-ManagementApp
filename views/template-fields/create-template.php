@@ -52,13 +52,13 @@ $type= ['Quotation'=>'Quotation','Bill'=>'Bill'];
     <button id="addSection" class="btn btn-primary" style="margin-left: 15px;">Add Section</button><br><br>
 
     <div class="container" id="addSectionDiv">
-        <div style="border:1px solid grey; border-radius:5px;">
-        <label class='form-control'>Section Name:</label><input type='text' name='section_name[]' class='form-control template-input-design'>
-        <button id="add" class="btn btn-primary btn-sm">Add Field</button>
-        <label class='form-control'>Fields Name:</label>
-        <div id="items" class="form-group">
+        <div class="template-section">
+            <label class='form-control template-create-label'>Section Name:</label><input type='text' name='section_name[]' class='form-control template-input-design'>
+            <button id="add" class="btn btn-primary btn-sm">Add Field</button>
+            <label class='form-control template-create-label'>Fields Name:</label>
+            <div id="items" class="form-group">
 
-        </div>
+            </div>
         </div>
     </div>
 

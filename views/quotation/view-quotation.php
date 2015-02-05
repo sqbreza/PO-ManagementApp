@@ -182,7 +182,7 @@ $red = "style='background:orange'";
         <div class="col-sm-3"><label  class="form-control">Field </label></div>
         <div class="col-sm-3"><label  class="form-control">Details</label></div>
         <div class="col-sm-1"><label  class="form-control">Cost*</label></div>
-        <div class="col-sm-1"><label  class="form-control">Units</label></div>
+        <div class="col-sm-1"><label  class="form-control">Units/%</label></div>
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
 </div>

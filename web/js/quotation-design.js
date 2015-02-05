@@ -19,6 +19,40 @@ $( "#project_name" ).on('keyup',function() {
 });
 
 
+/*$( ".addSection" ).on('keyup','.costs,.units',function() {
+    costs = $(this).parents('.eachLine').find('.costs').val();
+    units = $(this).parents('.eachLine').find('.units').val();
+    percentCost = (costs*units)/100;
+    result = parseFloat(costs)+parseFloat(percentCost);
+    total = $(this).parents('.eachLine').find('.total').val(result);
+
+    section = $(this).parents('.addSection');
+    section_id = section.attr('id');
+
+    var sum = 0;
+    $('#'+section_id+' .total').each(function() {
+        sum += Number($(this).val());
+    });
+    $('.'+section_id).val(sum);
+
+
+
+    var sum_ = 0;
+    $('.section_total').each(function() {
+        sum_ += Number($(this).val());
+    });
+
+    $('#sum_total').val(sum_);
+    $('#grand_total').val(sum_);
+
+    var num2words = new NumberToWords();
+    num2words.setMode("bd");
+    var bd = num2words.numberToWords(sum_);
+    $('#amount_in_words').val(bd);
+
+});*/
+
+
 $( ".addSection" ).on('keyup','.costs,.units',function() {
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();

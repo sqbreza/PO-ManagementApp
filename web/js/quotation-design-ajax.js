@@ -1,7 +1,10 @@
 $('body').on('click', '#save', function (e) {
 
 
+
     var formData = new FormData($('form')[0]);
+
+
 
     $.ajax({
         url  : 'form',
@@ -19,6 +22,7 @@ $('body').on('click', '#save', function (e) {
     return false;
 
 });
+
 
 
 $('body').on('click', '#update', function (e) {

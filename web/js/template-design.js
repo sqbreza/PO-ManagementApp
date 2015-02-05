@@ -8,7 +8,7 @@ $('#add').click(function (e) {
 $('#addSection').click(function (e) {
 
 
-    $('#addSectionDiv').append("<div class='template-section' id='section"+sectionId+"'><button style='float:right;' class='deleteSection btn-sm btn-danger'>&#10006;</button><label class='form-control'>Section Name:</label><input type='text' name='section_name[]' class='form-control template-input-design'><button class='add btn btn-primary btn-sm'>Add Field</button><div class='items form-group'> <div><label class='form-control'>Fields Name:</label></div></div></div>");
+    $('#addSectionDiv').append("<div class='template-section' id='section"+sectionId+"'><button style='float:right;' class='deleteSection btn-sm btn-danger'>&#10006;</button><label class='form-control template-create-label'>Section Name:</label><input type='text' name='section_name[]' class='form-control template-input-design'><button class='add btn btn-primary btn-sm'>Add Field</button><div class='items form-group'> <div><label class='form-control template-create-label'>Fields Name:</label></div></div></div>");
     sectionId++;
 });
 

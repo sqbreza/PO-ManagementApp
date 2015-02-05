@@ -68,12 +68,41 @@ class TemplateFieldsController extends Controller
     public function actionViewTemplate($id)
     {
         $section = TemplateFields::find()->where(['template_id'=>$id])->groupBy('section')->orderBy('id')->asArray()->all();
-        $model = TemplateFields::find()->where(['template_id'=>$id])->orderBy('id')->asArray()->all();
+        /*$model = TemplateFields::find()->where(['template_id'=>$id])->orderBy('id')->asArray()->all();*/
 
         return $this->render('view-template',[
             'section' => $section,
             'id' => $id,
         ]);
+    }
+
+    public function actionDeleteTemplate($id)
+    {
+        $isSave = true;
+
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+        try{
+
+            if(!TemplateFields::deleteAll('template_id = :id', ['id' => $id])){
+                $isSave = false;
+            }
+
+            if(!Template::deleteAll('id = :id', ['id' => $id])){
+                $isSave = false;
+            }
+            if($isSave) {
+                $transaction->commit();
+            }
+
+
+
+        }catch(Exception $e) {
+            $transaction->rollback();
+
+        }
+        return $this->redirect(['template/index',]);
+
     }
 
     public function actionForm()
@@ -127,7 +156,7 @@ class TemplateFieldsController extends Controller
 
         }
 
-        return $this->redirect(['template', 'id' => $id]);
+        return $this->redirect(['template/index']);
     }
 
     public function actionUpdateForm()

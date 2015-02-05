@@ -14,7 +14,7 @@ use Yii;
  * @property string $field_name
  * @property string $details
  * @property double $cost_day
- * @property integer $units
+ * @property double $units
  * @property double $total
  *
  * @property Template $templateRef
@@ -36,8 +36,8 @@ class QuotationRef extends \yii\db\ActiveRecord
     {
         return [
             [['ref', 'template_ref'], 'required'],
-            [['template_ref', 'units'], 'integer'],
-            [['cost_day', 'total'], 'number'],
+            [['template_ref'], 'integer'],
+            [['cost_day', 'total', 'units'], 'number'],
             [['ref', 'section', 'field_name', 'details'], 'string', 'max' => 255]
         ];
     }

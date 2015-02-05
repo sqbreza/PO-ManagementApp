@@ -25,7 +25,8 @@ class QuotationSearch extends Quotation
     public function rules()
     {
         return [
-            [['id', 'amount', 'client_company_id', 'user_id'], 'integer'],
+            [['id', 'client_company_id', 'user_id'], 'integer'],
+            [['amount'], 'number'],
             [['ref', 'project_name', 'date', 'po_no', 'status', 'supervisor_name'], 'safe'],
             [['clients.client_name'],'safe'],
             [['company.company_name'],'safe'],

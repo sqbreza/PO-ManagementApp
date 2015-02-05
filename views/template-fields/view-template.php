@@ -65,11 +65,11 @@ $company_name = Company::find()->where('id=:id',['id'=>$template->company_id])->
             $result =TemplateFields::find()->where(['template_id'=>$id,'section'=>$value['section']])->orderBy('id')->asArray()->all();
             ?>
 
-        <div style="border:1px solid grey; border-radius:5px;">
+        <div class="template-section">
 
-            <label class='form-control'>Section Name:</label><input type='text' name='section_name[]' value="<?=$value['section'];?>" class='form-control template-input-design'>
+            <label class='form-control template-create-label'>Section Name:</label><input type='text' name='section_name[]' value="<?=$value['section'];?>" class='form-control template-input-design'>
             <button id="add" class="btn btn-primary btn-sm">Add Field</button>
-            <label class='form-control'>Fields Name:</label>
+            <label class='form-control template-create-label'>Fields Name:</label>
             <?php foreach($result as $key=>$value){?>
             <div><input type='text' name='section<?= $key1;?>_field_name[]' value="<?=$value['field_name']?>" class='form-control template-input-design'><button class='delete btn-sm btn-danger'>Delete</button></div>
             <?php } ?>

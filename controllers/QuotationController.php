@@ -52,11 +52,7 @@ class QuotationController extends Controller
 
     public function actionForm()
     {
-
-        print_r($_POST);
-
         $isSave = true;
-
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
@@ -200,7 +196,6 @@ class QuotationController extends Controller
                 $isSave = false;
             }else{
                 $mId =$model->id;
-
 
 
             }

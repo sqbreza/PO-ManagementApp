@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Template' , 'template-fields/create-template', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Template', ['template-fields/create-template'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -34,6 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($model) {
                     return Html::a('Edit/view', ['template-fields/view-template', 'id' => $model->id]);
+                },
+            ],
+            [
+                'attribute' => '',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a('Delete', ['template-fields/delete-template', 'id' => $model->id]);
                 },
             ],
 
