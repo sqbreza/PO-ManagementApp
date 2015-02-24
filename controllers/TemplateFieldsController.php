@@ -116,6 +116,7 @@ class TemplateFieldsController extends Controller
         $company_id = $_POST['company_id'];
         $template_name = $_POST['template_name'];
         $type = $_POST['type'];
+        $calculation = $_POST['calculation'];
 
         try{
 
@@ -123,6 +124,7 @@ class TemplateFieldsController extends Controller
             $model->name = $template_name;
             $model->company_id = $company_id;
             $model->type = $type;
+            $model->calculation = $calculation;
             if(!$model->save()) {
                 $isSave = false;
             }
@@ -172,6 +174,7 @@ class TemplateFieldsController extends Controller
         $company_id = $_POST['company_id'];
         $template_name = $_POST['template_name'];
         $type = $_POST['type'];
+        $calculation = $_POST['calculation'];
         $id = $_POST['id'];
 
         try{
@@ -180,6 +183,7 @@ class TemplateFieldsController extends Controller
             $model->name = $template_name;
             $model->company_id = $company_id;
             $model->type = $type;
+            $model->calculation = $calculation;
             if(!$model->save()) {
                 $isSave = false;
             }

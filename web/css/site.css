@@ -9,12 +9,13 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
+    background: #42444E;
 }
 
 .wrap > .container {
 
-    padding: 70px 15px 20px;
-    background: #ffffff;
+    padding: 70px 15px 70px;
+    background: #E8E6E6;
 }
 
 .footer {

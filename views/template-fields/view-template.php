@@ -14,6 +14,7 @@ use app\models\Template;
 $this->registerJsFile(Yii::getAlias('@web').'/js/template-design.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 $company = ArrayHelper::map(Company::find()->all(), 'id', 'company_name');
 $type= ['Quotation'=>'Quotation','Bill'=>'Bill'];
+$calculation = ['Units'=>'Units','Percentage'=>'Percentage'];
 
 $template =Template::find()->where('id=:id',['id'=>$id])->one();
 $company_name = Company::find()->where('id=:id',['id'=>$template->company_id])->one()->company_name;
@@ -56,7 +57,23 @@ $company_name = Company::find()->where('id=:id',['id'=>$template->company_id])->
                 <?php
                 } ?>
             </select></div>
-    </div><br><br>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"><label class="form-control"> Calculation Type: </label></div>
+        <div class="col-sm-3"><label class="form-control"> <?=$template->calculation;?> </label></div>
+        <div class="col-sm-3"><select class="form-control" name="calculation">
+                <?php
+                foreach($calculation as $key=>$name) { ?>
+                    <option value="<?= $key; ?>"><?= $name; ?></option>
+                <?php
+                } ?>
+            </select></div>
+    </div>
+
+
+    <br><br>
 
     <!--<button id="addSection" class="btn btn-primary" style="margin-left: 15px;">Add Section</button><br><br>-->
 

@@ -11,7 +11,11 @@ use dosamigos\datepicker\DatePicker;
 use kartik\file\FileInput;
 use app\models\QuotationRef;
 use app\models\Quotation;
+use app\models\Template;
 
+
+$this->registerCssFile(Yii::getAlias('@web').'/jQueryTE/jquery-te-1.4.0.css', ['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::getAlias('@web').'/jQueryTE/jquery-te-1.4.0.min.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 
 
 $this->registerJsFile(Yii::getAlias('@web').'/js/inwords.js', ['depends' => [yii\web\JqueryAsset::className()]]);
@@ -167,13 +171,16 @@ $red = "style='background:orange'";
     </div>
 </div>
 
+
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Note : </label></div>
-        <div class="col-sm-8"><textarea class="form-control" name="note_up"><?= $model->note_up;?></textarea></div>
-
+        <div class="col-sm-8"><textarea   name="note_up"><?= $model->note_up;?></textarea></div>
     </div>
 </div>
+
+
+
 
 
 
@@ -182,15 +189,23 @@ $red = "style='background:orange'";
         <div class="col-sm-3"><label  class="form-control">Field </label></div>
         <div class="col-sm-3"><label  class="form-control">Details</label></div>
         <div class="col-sm-1"><label  class="form-control">Cost*</label></div>
-        <div class="col-sm-1"><label  class="form-control">Units/%</label></div>
+        <?php
+        $calculation = Template::find()->select('calculation')->where('id = :id',['id'=>$model->template_ref])->one()->calculation;
+
+        if($calculation == 'Units'){ ?>
+            <div class="col-sm-1"><label  class="form-control">Units</label></div>
+        <?php }else{ ?>
+            <div class="col-sm-1"><label  class="form-control">%</label></div>
+        <?php }?>
+        <input type="hidden" id="calculation" value="<?=$calculation?>">
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
 </div>
 
-<?php
-foreach($section as $value){
-    $sectionValue = preg_replace('/\s+/', '', $value['section']);
-    $result =QuotationRef::find()->where(['ref'=>$model->ref,'section'=>$value['section']])->orderBy('id')->asArray()->all();
+    <?php
+        foreach($section as $value){
+            $sectionValue = preg_replace('/\s+/', '', $value['section']);
+            $result =QuotationRef::find()->where(['ref'=>$model->ref,'section'=>$value['section']])->orderBy('id')->asArray()->all();
     ?>
     <div class="row">
         <h4> <?= $value['section'];?></h4>

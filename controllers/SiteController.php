@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Clients;
+use app\models\Company;
+use app\models\Template;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -59,22 +62,31 @@ class SiteController extends Controller
 
     public function actionQpdf($id) {
 
-        $company = Quotation::find()->where('id = :id',['id'=>$id,])->one();
+        $quotation = Quotation::find()->where('id = :id',['id'=>$id,])->one();
+        $template = Template::find()->where(['id'=>$quotation->template_ref])->one();
+        $company = Company::find()->where(['id'=>$quotation->company_id])->one();
+        $client = Clients::find()->where(['id'=>$quotation->client_company_id])->one();
+        //$quotation_ref = QuotationRef::find()->where('ref = :ref',['ref'=>$quotation->ref,])->all();
+        $section = QuotationRef::find()->where(['ref'=>$quotation->ref])->groupBy('section')->orderBy('id')->asArray()->all();
 
 
-        $quotation = QuotationRef::find()->where('ref = :ref',['ref'=>$company->ref,])->all();
+
+
 
         $header = "<div><div style='float: left; width: 200px; font-size: 32px;' class='text-muted'>QUOTATION</div><div style='float: left;'><img src='../web/images/ice9.png' width='60' style='float:right;'/></div></div>";
-        $footer = "<div style='float:left; width: 100%; text-align: center;'> ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer </div>";
+        //$footer = "<div style='float:left; width: 100%; text-align: center;'> ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer </div>";
         $watermark = "WATERMARK";
         $htmlContent = $this->renderPartial('_reportView',[
+            'quotation'=>$quotation,
+            'template'=>$template,
             'company'=>$company,
-            'quotation'=>$quotation
+            'client'=>$client,
+            'section'=>$section
         ]);
         $pdf = Yii::$app->pdf;
         $mpdf = $pdf->api; // fetches mpdf api
         $mpdf->SetHTMLHeader ($header);
-        $mpdf->SetHTMLFooter ($footer);
+        //$mpdf->SetHTMLFooter ($footer);
         $mpdf->SetWatermarkText ($watermark);
         //$mpdf->showWatermarkText = true;
         $pdf->content = $htmlContent;

@@ -54,14 +54,8 @@ $this->title = 'Ice9 Interactive';
     <?php
     }else{
     ?>
-    <div class="jumbotron" style="font-size: 18px;">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, aliquam cupiditate debitis eius eligendi exercitationem facilis ipsa iste magnam magni maxime nostrum, officia officiis quasi quo rem, repudiandae. Nihil, quia!
+    <div class="container-fluid">
+        <iframe src="http://ice9apps.net/" frameborder="0" width="100%" height="600px"></iframe>
     </div>
     <?php
     }

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\QuotationRef;
 use app\models\RefGenerator;
+use app\models\Template;
 use Yii;
 use app\models\Quotation;
 use app\models\TemplateFields;
@@ -227,7 +228,6 @@ class QuotationController extends Controller
     public function actionFormUpdate()
     {
         print_r($_POST);
-
         $isSave = true;
 
         $connection = \Yii::$app->db;
@@ -432,6 +432,11 @@ class QuotationController extends Controller
     public function actionCreateQuotation($id)
     {
        // $models = TemplateFields::findAll(['template_id'=>12]);
+
+        if(!Template::find()->where(['id'=>$id])->one()){
+            return $this->redirect('index');
+        }
+
         $section = TemplateFields::find()->where(['template_id'=>$id])->groupBy('section')->orderBy('id')->asArray()->all();
         $model = TemplateFields::find()->where(['template_id'=>$id])->orderBy('id')->asArray()->all();
 

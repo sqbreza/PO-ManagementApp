@@ -51,12 +51,15 @@ class TemplateController extends Controller
     }
     public function actionChooseTemplate()
     {
+
+        //$type = Yii::$app->getRequest()->getQueryParam('type');
         $searchModel = new TemplateSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('choose-template', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            //'type'=>$type
         ]);
     }
 

@@ -6,9 +6,14 @@ use yii\helpers\ArrayHelper;
 use app\models\TemplateFields;
 use app\models\Company;
 use app\models\Clients;
+use app\models\Template;
 use dosamigos\datepicker\DatePicker;
 use kartik\file\FileInput;
 
+
+
+$this->registerCssFile(Yii::getAlias('@web').'/jQueryTE/jquery-te-1.4.0.css', ['depends' => [yii\web\JqueryAsset::className()]]);
+$this->registerJsFile(Yii::getAlias('@web').'/jQueryTE/jquery-te-1.4.0.min.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 
 
 $this->registerJsFile(Yii::getAlias('@web').'/js/inwords.js', ['depends' => [yii\web\JqueryAsset::className()]]);
@@ -170,7 +175,17 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
         <div class="col-sm-3"><label  class="form-control">Field </label></div>
         <div class="col-sm-3"><label  class="form-control">Details</label></div>
         <div class="col-sm-1"><label  class="form-control">Cost*</label></div>
-        <div class="col-sm-1"><label  class="form-control">Units/%</label></div>
+        <?php
+        $calculation = Template::find()->select('calculation')->where('id = :id',['id'=>$id])->one()->calculation;
+
+        if($calculation == 'Units'){ ?>
+
+
+            <div class="col-sm-1"><label  class="form-control">Units</label></div>
+        <?php }else{ ?>
+            <div class="col-sm-1"><label  class="form-control">%</label></div>
+        <?php }?>
+        <input type="hidden" id="calculation" value="<?=$calculation?>">
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
 </div>

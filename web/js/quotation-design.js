@@ -11,77 +11,84 @@ $('body').on('click', '.add', function (e) {
 });
 
 
-
+var calc = $('#calculation').val();
 
 
 $( "#project_name" ).on('keyup',function() {
     $('#project_name_header').val($('#project_name').val());
 });
 
+if(calc == 'Percentage'){
+    $( ".addSection" ).on('keyup','.costs,.units',function() {
+        costs = $(this).parents('.eachLine').find('.costs').val();
+        units = $(this).parents('.eachLine').find('.units').val();
+        percentCost = (costs*units)/100;
+        result = parseFloat(costs)+parseFloat(percentCost);
+        result = result.toFixed(2);
+        total = $(this).parents('.eachLine').find('.total').val(result);
 
-/*$( ".addSection" ).on('keyup','.costs,.units',function() {
-    costs = $(this).parents('.eachLine').find('.costs').val();
-    units = $(this).parents('.eachLine').find('.units').val();
-    percentCost = (costs*units)/100;
-    result = parseFloat(costs)+parseFloat(percentCost);
-    total = $(this).parents('.eachLine').find('.total').val(result);
+        section = $(this).parents('.addSection');
+        section_id = section.attr('id');
 
-    section = $(this).parents('.addSection');
-    section_id = section.attr('id');
-
-    var sum = 0;
-    $('#'+section_id+' .total').each(function() {
-        sum += Number($(this).val());
-    });
-    $('.'+section_id).val(sum);
-
-
-
-    var sum_ = 0;
-    $('.section_total').each(function() {
-        sum_ += Number($(this).val());
-    });
-
-    $('#sum_total').val(sum_);
-    $('#grand_total').val(sum_);
-
-    var num2words = new NumberToWords();
-    num2words.setMode("bd");
-    var bd = num2words.numberToWords(sum_);
-    $('#amount_in_words').val(bd);
-
-});*/
-
-
-$( ".addSection" ).on('keyup','.costs,.units',function() {
-    costs = $(this).parents('.eachLine').find('.costs').val();
-    units = $(this).parents('.eachLine').find('.units').val();
-    total = $(this).parents('.eachLine').find('.total').val(costs*units);
-    section = $(this).parents('.addSection');
-    section_id = section.attr('id');
-
-    var sum = 0;
-    $('#'+section_id+' .total').each(function() {
-        sum += Number($(this).val());
-    });
-    $('.'+section_id).val(sum);
+        var sum = 0;
+        $('#'+section_id+' .total').each(function() {
+            sum += Number($(this).val());
+        });
+        $('.'+section_id).val(sum);
 
 
 
-    var sum_ = 0;
-    $('.section_total').each(function() {
-        sum_ += Number($(this).val());
+        var sum_ = 0;
+        $('.section_total').each(function() {
+            sum_ += Number($(this).val());
+        });
+
+        $('#sum_total').val(sum_);
+        $('#grand_total').val(sum_);
+
+        var num2words = new NumberToWords();
+        num2words.setMode("bd");
+        var bd = num2words.numberToWords(sum_);
+        $('#amount_in_words').val(bd);
+
     });
 
-    $('#sum_total').val(sum_);
-    $('#grand_total').val(sum_);
+}else{
 
-    var num2words = new NumberToWords();
-    num2words.setMode("bd");
-    var bd = num2words.numberToWords(sum_);
-    $('#amount_in_words').val(bd);
+    $( ".addSection" ).on('keyup','.costs,.units',function() {
+        costs = $(this).parents('.eachLine').find('.costs').val();
+        units = $(this).parents('.eachLine').find('.units').val();
+        result = costs*units;
+        result = result.toFixed(2);
+        total = $(this).parents('.eachLine').find('.total').val(result);
+        section = $(this).parents('.addSection');
+        section_id = section.attr('id');
 
-});
+        var sum = 0;
+        $('#'+section_id+' .total').each(function() {
+            sum += Number($(this).val());
+        });
+        $('.'+section_id).val(sum);
+
+
+
+        var sum_ = 0;
+        $('.section_total').each(function() {
+            sum_ += Number($(this).val());
+        });
+
+        $('#sum_total').val(sum_);
+        $('#grand_total').val(sum_);
+
+        var num2words = new NumberToWords();
+        num2words.setMode("bd");
+        var bd = num2words.numberToWords(sum_);
+        $('#amount_in_words').val(bd);
+
+    });
+}
+
+
 
 
 /*
@@ -136,4 +143,9 @@ $('body').on('click', '#check_id', function (e) {
     }
 
 });
+
+$(document).ready(function(){
+    $("textarea").jqte();
+});
+
 

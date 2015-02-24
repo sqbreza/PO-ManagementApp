@@ -11,6 +11,7 @@ use Yii;
  * @property string $name
  * @property integer $company_id
  * @property string $type
+ * @property string $calculation
  *
  * @property QuationRef[] $quationRefs
  * @property TemplateFields[] $templateFields
@@ -33,7 +34,7 @@ class Template extends \yii\db\ActiveRecord
         return [
             [['name', 'company_id','type'], 'required'],
             [['company_id'], 'integer'],
-            [['type'], 'string'],
+            [['type','calculation'], 'string'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -48,6 +49,7 @@ class Template extends \yii\db\ActiveRecord
             'name' => Yii::t('app', 'Name'),
             'company_id' => Yii::t('app', 'Company ID'),
             'type' => Yii::t('app', 'Type'),
+            'Calculation Type' => Yii::t('app', 'Calculation'),
         ];
     }
 

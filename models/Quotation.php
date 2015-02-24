@@ -20,7 +20,7 @@ use Yii;
  * @property integer $user_id
  * @property string $supervisor_name
  * @property integer $show_section_amount
- * @property string $template_ref
+ * @property integer $template_ref
  * @property string $note_up
  * @property string $note_down
  * @property string $created_time
@@ -45,11 +45,11 @@ class Quotation extends \yii\db\ActiveRecord
     {
         return [
             [['ref', 'project_name', 'company_id', 'client_company_id', 'amount', 'date', 'user_id', 'show_section_amount', 'created_time'], 'required'],
-            [['company_id', 'client_company_id', 'user_id', 'show_section_amount'], 'integer'],
+            [['company_id', 'client_company_id', 'user_id', 'show_section_amount', 'template_ref'], 'integer'],
             [['amount'], 'number'],
             [['date', 'created_time'], 'safe'],
             [['note_up', 'note_down'], 'string'],
-            [['ref', 'project_name', 'project_name_header', 'po_no', 'status', 'template_ref'], 'string', 'max' => 255],
+            [['ref', 'project_name', 'project_name_header', 'po_no', 'status'], 'string', 'max' => 255],
             [['supervisor_name'], 'string', 'max' => 11],
 
 

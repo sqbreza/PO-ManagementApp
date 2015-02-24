@@ -26,7 +26,7 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => 'Ice9 Accounting Software',
+                'brandLabel' => 'Accounting Software',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
