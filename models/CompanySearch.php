@@ -19,7 +19,7 @@ class CompanySearch extends Company
     {
         return [
             [['id', 'total_employee'], 'integer'],
-            [['company_name', 'address', 'established_date'], 'safe'],
+            [['company_name', 'address', 'established_date', 'contact_no', 'email', 'website'], 'safe'],
         ];
     }
 
@@ -47,7 +47,11 @@ class CompanySearch extends Company
             'query' => $query,
         ]);
 
-        if (!($this->load($params) && $this->validate())) {
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -58,7 +62,10 @@ class CompanySearch extends Company
         ]);
 
         $query->andFilterWhere(['like', 'company_name', $this->company_name])
-            ->andFilterWhere(['like', 'address', $this->address]);
+            ->andFilterWhere(['like', 'address', $this->address])
+            ->andFilterWhere(['like', 'contact_no', $this->contact_no])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'website', $this->website]);
 
         return $dataProvider;
     }

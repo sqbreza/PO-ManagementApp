@@ -112,9 +112,15 @@ class TemplateFieldsController extends Controller
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
+        if(!empty($_POST['template_name'])){
+            $template_name = $_POST['template_name'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Template name must not be empty!');
+            return $this->redirect('create-template');
+        }
+
         $results = $_POST['section_name'];
         $company_id = $_POST['company_id'];
-        $template_name = $_POST['template_name'];
         $type = $_POST['type'];
         $calculation = $_POST['calculation'];
 
@@ -155,6 +161,7 @@ class TemplateFieldsController extends Controller
 
         } catch(Exception $e) {
             $transaction->rollback();
+            return $this->redirect(['template/create-template']);
 
         }
 
@@ -170,9 +177,15 @@ class TemplateFieldsController extends Controller
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
 
+        if(!empty($_POST['template_name'])){
+            $template_name = $_POST['template_name'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Template name must not be empty!');
+            return $this->redirect('create-template');
+        }
+
         $results = $_POST['section_name'];
         $company_id = $_POST['company_id'];
-        $template_name = $_POST['template_name'];
         $type = $_POST['type'];
         $calculation = $_POST['calculation'];
         $id = $_POST['id'];

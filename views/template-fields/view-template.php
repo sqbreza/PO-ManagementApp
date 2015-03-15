@@ -23,6 +23,15 @@ $company_name = Company::find()->where('id=:id',['id'=>$template->company_id])->
 
 ?>
 
+<div class="container">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <center class="text-muted error-msg">
+            <?= Yii::$app->session->getFlash('error'); ?>
+        </center>
+    </div>
+</div>
+
 <form onsubmit="return false;" id="templateForm">
 
 
@@ -46,18 +55,18 @@ $company_name = Company::find()->where('id=:id',['id'=>$template->company_id])->
         </div>
     </div>
 
-    <div class="row">
+   <!-- <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-2"><label class="form-control"> Template Type: </label></div>
-        <div class="col-sm-3"><label class="form-control"> <?=$template->type;?> </label></div>
+        <div class="col-sm-3"><label class="form-control"> <?/*=$template->type;*/?> </label></div>
         <div class="col-sm-3"><select class="form-control" name="type">
                 <?php
-                foreach($type as $key=>$name) { ?>
-                    <option value="<?= $key; ?>"><?= $name; ?></option>
+/*                foreach($type as $key=>$name) { */?>
+                    <option value="<?/*= $key; */?>"><?/*= $name; */?></option>
                 <?php
-                } ?>
+/*                } */?>
             </select></div>
-    </div>
+    </div>-->
 
     <div class="row">
         <div class="col-sm-2"></div>

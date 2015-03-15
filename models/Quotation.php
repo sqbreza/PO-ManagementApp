@@ -23,6 +23,9 @@ use Yii;
  * @property integer $template_ref
  * @property string $note_up
  * @property string $note_down
+ * @property string $calculation
+ * @property double $vat
+ * @property string $service_charge
  * @property string $created_time
  *
  * @property Clients $clientCompany
@@ -46,9 +49,9 @@ class Quotation extends \yii\db\ActiveRecord
         return [
             [['ref', 'project_name', 'company_id', 'client_company_id', 'amount', 'date', 'user_id', 'show_section_amount', 'created_time'], 'required'],
             [['company_id', 'client_company_id', 'user_id', 'show_section_amount', 'template_ref'], 'integer'],
-            [['amount'], 'number'],
+            [['amount','vat'], 'number'],
             [['date', 'created_time'], 'safe'],
-            [['note_up', 'note_down'], 'string'],
+            [['note_up', 'note_down','calculation','service_charge'], 'string'],
             [['ref', 'project_name', 'project_name_header', 'po_no', 'status'], 'string', 'max' => 255],
             [['supervisor_name'], 'string', 'max' => 11],
 
@@ -78,6 +81,9 @@ class Quotation extends \yii\db\ActiveRecord
             'template_ref' => Yii::t('app', 'Template Ref'),
             'note_up' => Yii::t('app', 'Note Up'),
             'note_down' => Yii::t('app', 'Note Down'),
+            'calculation' => Yii::t('app', 'Calculation'),
+            'vat' => Yii::t('app', 'Vat'),
+            'service_charge' => Yii::t('app', 'Service Charge'),
             'created_time' => Yii::t('app', 'Created Time'),
         ];
     }

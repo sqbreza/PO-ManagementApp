@@ -13,22 +13,16 @@ use app\models\QuotationRef;
 use app\models\Quotation;
 use app\models\Template;
 
+
+$sub_total =  $quotation->show_section_amount;
+$calculation =  $template->calculation;
+
+
+
 ?>
-<!-- <table style=" width:100%;">
 
-        <?php /*foreach($company as $key=>$value): */?>
-            <tr>
-                <td style="border: 1px solid black;"><?/*= $value->id; */?></td>
-                <td style="border: 1px solid black;"> <?/*= $value->po_no; */?></td>
-                <td style="border: 1px solid black;"> <?/*= $value->status; */?></td>
-                <td style="border: 1px solid black;"> <?/*= $value->supervisor_name; */?></td>
-            </tr>
-        <?php /*endforeach; */?>
-    </table>
 
--->
-
-<div style="width: 60%; margin-left: 20%">
+<div style="width: 60%; margin-left: 20%;">
     <table class="table">
         <tr>
             <td style="width: 30%;">Quoted by:</td>
@@ -56,13 +50,17 @@ use app\models\Template;
     <table style="width: 100%;" class="table table-bordered text-center">
 
         <tr>
-            <td colspan="5" class="" style="background: #ffb7b9;"> <h4><?=$quotation->project_name_header; ?> </h4></td>
+            <td colspan="5" class="" style="background: #ed5b29;color: #ffffff;"> <h4><?=$quotation->project_name_header; ?> </h4></td>
         </tr>
         <tr>
             <th class="text-center" style="width: 40%;"></th>
             <th class="text-center" style="width: 15%;">Details</th>
             <th class="text-center" style="width: 15%;">Cost/Day</th>
+           <?php if($calculation == 'Units'){ ?>
             <th class="text-center" style="width: 15%;">Units</th>
+            <?php }else{ ?>
+               <th class="text-center" style="width: 15%;">%</th>
+            <?php }?>
             <th class="text-center" style="width: 15%;">Total</th>
         </tr>
 
@@ -82,11 +80,11 @@ use app\models\Template;
                 ?>
 
                 <tr>
-                    <td style="width: 40%;"><?=$val['field_name'];?></td>
-                    <td style="width: 15%;"><?=$val['details'];;?></td>
-                    <td style="width: 15%;"><?=$val['cost_day'];;?></td>
-                    <td style="width: 15%;"><?=$val['units'];?></td>
-                    <td style="width: 15%;"><?=$val['total'];?></td>
+                    <td  style="width: 40%;"><?=$val['field_name'];?></td>
+                    <td class="text-right" style="width: 15%;"><?=$val['details'];;?></td>
+                    <td class="text-right" style="width: 15%;"><?=$val['cost_day'];;?></td>
+                    <td class="text-right" style="width: 15%;"><?=$val['units'];?></td>
+                    <td class="text-right" style="width: 15%;"><?=$val['total'];?></td>
                 </tr>
 
 
@@ -96,25 +94,22 @@ use app\models\Template;
             <?php
                 $total = $total + $sum;
 
+            }if($sub_total == 1){
+            ?>
+
+                <tr>
+                    <td colspan="4" class="text-right"></td>
+                    <td class="text-right"><?= $sum; ?></td>
+                </tr>
+
+            <?php
             }
-            ?>
-
-            <?
-            // condition for sub total ...
-            ?>
-
-            <tr>
-                <td colspan="4" class="text-right"></td>
-                <td class="text-center"><?=$sum;?></td>
-            </tr>
-
-        <?php
         }
         ?>
         <tr>
             <td class="text-center" style="width: 40%;"> Total </td>
             <td colspan="3" class="text-right"></td>
-            <td class="text-center"><?=$total;?></td>
+            <td class="text-center text-right"><?=$total;?></td>
         </tr>
 
     </table>

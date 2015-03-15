@@ -12,8 +12,11 @@ use Yii;
  * @property string $address
  * @property string $established_date
  * @property integer $total_employee
+ * @property string $contact_no
+ * @property string $email
+ * @property string $website
  *
- * @property Users[] $users
+ * @property Quotation[] $quotations
  */
 class Company extends \yii\db\ActiveRecord
 {
@@ -34,7 +37,7 @@ class Company extends \yii\db\ActiveRecord
             [['company_name', 'address'], 'required'],
             [['established_date'], 'safe'],
             [['total_employee'], 'integer'],
-            [['company_name', 'address'], 'string', 'max' => 255]
+            [['company_name', 'address', 'contact_no', 'email', 'website'], 'string', 'max' => 255]
         ];
     }
 
@@ -44,19 +47,22 @@ class Company extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'company_name' => 'Company Name',
-            'address' => 'Address',
-            'established_date' => 'Established Date',
-            'total_employee' => 'Total Employee',
+            'id' => Yii::t('app', 'ID'),
+            'company_name' => Yii::t('app', 'Company Name'),
+            'address' => Yii::t('app', 'Address'),
+            'established_date' => Yii::t('app', 'Established Date'),
+            'total_employee' => Yii::t('app', 'Total Employee'),
+            'contact_no' => Yii::t('app', 'Contact No'),
+            'email' => Yii::t('app', 'Email'),
+            'website' => Yii::t('app', 'Website'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsers()
+    public function getQuotations()
     {
-        return $this->hasMany(Users::className(), ['company_id' => 'id']);
+        return $this->hasMany(Quotation::className(), ['company_id' => 'id']);
     }
 }

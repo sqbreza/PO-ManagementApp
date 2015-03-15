@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => '',
                 'format' => 'raw',
                 'value' => function ($model, $key, $index) {
-                    return Html::a('Click Here', ['quotation/create-quotation', 'id' => $model->id]);
+                    return Html::a('Use template', ['quotation/create-quotation', 'id' => $model->id]);
                 },
             ],
 

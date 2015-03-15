@@ -73,9 +73,10 @@ class SiteController extends Controller
 
 
 
-        $header = "<div><div style='float: left; width: 200px; font-size: 32px;' class='text-muted'>QUOTATION</div><div style='float: left;'><img src='../web/images/ice9.png' width='60' style='float:right;'/></div></div>";
-        //$footer = "<div style='float:left; width: 100%; text-align: center;'> ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer | ice9 Footer </div>";
-        $watermark = "WATERMARK";
+        $header = "<img src='../web/images/maverick-logo.jpg'>";
+       // $header = "<div><div style='float: left; width: 200px; font-size: 32px;' class='text-muted'>QUOTATION</div><div style='float: left;'><img src='../web/images/ice9.png' width='60' style='float:right;'/></div></div>";
+        $footer = "<div style='float:left; width: 100%; text-align: center;'> <strong> Contact No.-".$company->contact_no." | ".$company->address." </strong> <br> ".$company->email." | ".$company->website."</div>";
+        $watermark = "../web/images/watermark.jpg";
         $htmlContent = $this->renderPartial('_reportView',[
             'quotation'=>$quotation,
             'template'=>$template,
@@ -83,12 +84,15 @@ class SiteController extends Controller
             'client'=>$client,
             'section'=>$section
         ]);
+        //$htmlContent = 'test';
         $pdf = Yii::$app->pdf;
         $mpdf = $pdf->api; // fetches mpdf api
-        $mpdf->SetHTMLHeader ($header);
-        //$mpdf->SetHTMLFooter ($footer);
-        $mpdf->SetWatermarkText ($watermark);
-        //$mpdf->showWatermarkText = true;
+        //$mpdf->SetHTMLHeader ($header);
+       // $mpdf->SetHTMLFooter ($footer);
+        $mpdf->SetHTMLHeader($header);
+        $mpdf->SetHTMLFooter ($footer);
+        $mpdf->SetWatermarkImage ($watermark,0.3, '',array(0,0));
+        $mpdf->showWatermarkImage = true;
         $pdf->content = $htmlContent;
         return $pdf->render();
     }

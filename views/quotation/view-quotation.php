@@ -36,11 +36,15 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 
 ?>
 
-<div class="container" xmlns="http://www.w3.org/1999/html">
-    <center class="text-muted" style="background:lightblue; margin-bottom: 50px; width: 95%;">
-        <?= Yii::$app->session->getFlash('error'); ?>
-    </center>
+<div class="container">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <center class="text-muted error-msg">
+            <?= Yii::$app->session->getFlash('error'); ?>
+        </center>
+    </div>
 </div>
+
 <div class="quotation-index container">
 
 
@@ -51,7 +55,7 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Supervisor : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="supervisor_name" value="<?= $model->supervisor_name;?>"/></div>
+        <div class="col-sm-8"><input  type="text" class="form-control" name="supervisor_name" value="<?= $model->supervisor_name;?>"/></div>
 
     </div>
 </div>
@@ -60,16 +64,16 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 <!--<div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Ref no : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="ref"/></div>
+        <div class="col-sm-8"><input  type="text" class="form-control" name="ref"/></div>
 
     </div>
 </div>-->
 
 
-<input type="hidden" class="form-control" name="template_ref" value="<?= $model->template_ref;?>" />
-<input type="hidden" class="form-control" name="user_id" value="<?= $model->user_id;?>" />
-<input type="hidden" class="form-control" name="model_id" value="<?= $model->id;?>" />
-<input type="hidden" class="form-control" name="ref" value="<?= $model->ref;?>" />
+<input  type="hidden" class="form-control" name="template_ref" value="<?= $model->template_ref;?>" />
+<input  type="hidden" class="form-control" name="user_id" value="<?= $model->user_id;?>" />
+<input  type="hidden" class="form-control" name="model_id" value="<?= $model->id;?>" />
+<input  type="hidden" class="form-control" name="ref" value="<?= $model->ref;?>" />
 
 <?php
 $green = "style='background:limegreen'";
@@ -79,7 +83,7 @@ $red = "style='background:orange'";
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Status : </label></div>
-        <!--<div class="col-sm-8"><input type="text" class="form-control" name="status" value ="<?/*= $model->status;*/?>"/></div>-->
+        <!--<div class="col-sm-8"><input  type="text" class="form-control" name="status" value ="<?/*= $model->status;*/?>"/></div>-->
         <div class="col-sm-2"><label class="form-control text-center" <?=($model->status=='Approved')?$green:$red?>> <?= $model->status;?></label></div>
         <div class="col-sm-6"><select class="form-control" name="status">
                 <option value="Pending"> Pending </option>
@@ -127,7 +131,7 @@ $red = "style='background:orange'";
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation For : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="project_name" id="project_name" value="<?= $model->project_name;?>"/></div>
+        <div class="col-sm-8"><input  type="text" class="form-control" name="project_name" id="project_name" value="<?= $model->project_name;?>"/></div>
 
     </div>
 </div>
@@ -135,7 +139,7 @@ $red = "style='background:orange'";
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation Header : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="project_name_header" id="project_name_header" value="<?= $model->project_name_header;?>"/></div>
+        <div class="col-sm-8"><input  type="text" class="form-control" name="project_name_header" id="project_name_header" value="<?= $model->project_name_header;?>"/></div>
 
     </div>
 </div>
@@ -186,23 +190,29 @@ $red = "style='background:orange'";
 
 <div class="row" style="margin-top:50px;">
     <div class="form-group">
-        <div class="col-sm-3"><label  class="form-control">Field </label></div>
+        <div class="col-sm-2"><label  class="form-control">Field </label></div>
         <div class="col-sm-3"><label  class="form-control">Details</label></div>
-        <div class="col-sm-1"><label  class="form-control">Cost*</label></div>
+        <div class="col-sm-2"><label  class="form-control">Cost</label></div>
         <?php
-        $calculation = Template::find()->select('calculation')->where('id = :id',['id'=>$model->template_ref])->one()->calculation;
+        $calculation = Quotation::find()->select('calculation')->where('id = :id',['id'=>$model->id])->one()->calculation;
+
+        $service_charge = unserialize(Quotation::find()->select('service_charge')->where('id = :id',['id'=>$model->id])->one()->service_charge);
+
 
         if($calculation == 'Units'){ ?>
             <div class="col-sm-1"><label  class="form-control">Units</label></div>
         <?php }else{ ?>
             <div class="col-sm-1"><label  class="form-control">%</label></div>
         <?php }?>
-        <input type="hidden" id="calculation" value="<?=$calculation?>">
+        <input  type="hidden" id="calculation" value="<?=$calculation?>">
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
+    <input  type="hidden" class="form-control" name="calculation" value="<?= $calculation?>" />
 </div>
 
     <?php
+
+        $service_key = 0;
         foreach($section as $value){
             $sectionValue = preg_replace('/\s+/', '', $value['section']);
             $result =QuotationRef::find()->where(['ref'=>$model->ref,'section'=>$value['section']])->orderBy('id')->asArray()->all();
@@ -210,32 +220,51 @@ $red = "style='background:orange'";
     <div class="row">
         <h4> <?= $value['section'];?></h4>
         <div class="addSection" id="<?=$sectionValue;?>">
-            <input type="hidden" name="section_name[]" value="<?= $value['section'];?>">
+            <input  type="hidden" name="section_name[]" value="<?= $value['section'];?>">
             <?php
             foreach($result as $val){
 
                 ?>
                 <div class="addLine">
                     <div class="form-group eachLine">
-
-                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
-                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_details[]" class="form-control" value="<?= $val['details'];?>" /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" value="<?= $val['cost_day'];?>" /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" value="<?= $val['units'];?>"/></div>
-                        <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" value="<?= $val['total'];?>"/></div>
+                        <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
+                        <div class="col-sm-3"><input  type="text" name="<?= $sectionValue;?>_details[]" class="form-control" value="<?= $val['details'];?>" /></div>
+                        <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" value="<?= $val['cost_day'];?>" /></div>
+                        <div class="col-sm-1"><input  type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" value="<?= $val['units'];?>"/></div>
+                        <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" value="<?= $val['total'];?>"/></div>
                         <div class="col-sm-2">
                             <button class="btn btn-sm btn-danger delete"> Delete </button>
                             <button class="btn btn-sm btn-success add"> Add </button>
                         </div>
 
                     </div>
+
                 </div>
             <?php } ?>
 
             <div class="row">
                 <div class="col-sm-8"></div>
-                <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_sub_total" class="<?= $sectionValue;?> form-control section_total" /></div>
+                <div class="col-sm-2"><input readonly  type="text" id="<?= $sectionValue;?>_sub_total_no_sc" name="<?= $sectionValue;?>_sub_total_no_sc" class="<?= $sectionValue;?> form-control" /></div>
             </div>
+            <div class="row">
+            <div class="col-sm-3">
+                <label>
+                    <input  <?php if($service_charge[$service_key]!=0) echo 'checked';?> type="checkbox" class="service_charge" id="check_id_<?=$sectionValue?>"> Add Service Charge @
+                    <input size="1" maxlength="3" type="text" value="<?= $service_charge[$service_key];?>" name="service_charge[]" class="service_charge" id="service_charge_<?=$sectionValue;?>"> %
+                </label>
+            </div>
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2"><input readonly  type="text" id="<?= $sectionValue;?>_sub_total_amount_sc" class="form-control" /></div>
+
+
+
+            </div>
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-2"><input readonly  type="text" id="<?= $sectionValue;?>_sub_total" name="<?= $sectionValue;?>_sub_total" class="<?= $sectionValue;?> form-control section_total" /></div>
+            </div>
+
+
 
 
         </div>
@@ -247,6 +276,7 @@ $red = "style='background:orange'";
 
 
 <?php
+            $service_key++;
 }
 
 ?>
@@ -257,7 +287,7 @@ $red = "style='background:orange'";
     <div class="form-group">
         <div class="col-sm-3"><label class="form-control">Total:</label></div>
         <div class="col-sm-5"></div>
-        <div class="col-sm-2"><input type="text" name="sum_of_total" class="form-control" id="sum_total"/></div>
+        <div class="col-sm-2"><input readonly  type="text" name="sum_of_total" class="form-control" id="sum_total"/></div>
 
     </div>
 </div>
@@ -265,7 +295,7 @@ $red = "style='background:orange'";
 <div class="row">
     <div class="form-group">
         <div class="col-sm-3"><label class="form-control">In words:</label></div>
-        <div class="col-sm-7"><input type="text" name="amounts_in_word" class="form-control" id="amount_in_words"/></div>
+        <div class="col-sm-7"><input  type="text" name="amounts_in_word" class="form-control" id="amount_in_words"/></div>
     </div>
 </div>
 
@@ -273,20 +303,23 @@ $red = "style='background:orange'";
     <div class="form-group">
         <div class="col-sm-2">
             <label>
-                <input type="hidden" name="show_section_amount" value="0">
-                <input type="checkbox" id="" name="show_section_amount" value="1"> Show Sub-total in Template
+                <input  type="hidden" name="show_section_amount" value="1">
+                <input  type="checkbox" id="" name="show_section_amount" value="0"> Hide sub-total in Template
 
             </label>
         </div>
         <div class="col-sm-3">
 
             <label>
-                <input type="checkbox" id="check_id"> Add VAT @ 15%
+                <input  type="hidden"  name="company_vat_checked" value="0">
+                <input  type="checkbox" id="check_id" name="company_vat_checked" value="1"> Add VAT @
+                <input readonly  size="1" maxlength="2" type="text" value="15" name="company_vat" id="company_vat" style="background: #eee;"> %
+
             </label>
 
         </div>
         <div class="col-sm-3"><label class="form-control">Grand total:</label></div>
-        <div class="col-sm-2"><input type="text" name="grand_total" class="form-control" id="grand_total" value="<?= $model->amount;?>"/></div>
+        <div class="col-sm-2"><input  type="text" name="grand_total" class="form-control" id="grand_total" value="<?= $model->amount;?>"/></div>
     </div>
 </div>
 
@@ -294,7 +327,7 @@ $red = "style='background:orange'";
 <div class="row">
     <div class="form-group">
         <div class="col-sm-10">
-            <input type="file" class="form-control" name="file[]" id="file" multiple="true">
+            <input  type="file" class="form-control" name="file[]" id="file" multiple="true">
         </div>
     </div>
 </div>
@@ -351,9 +384,5 @@ $red = "style='background:orange'";
 </form>
 
 
-
-<blockquote class="text-muted" style="background: #f5f5f5; font-size: 12px;">
-    * Cost per day
-</blockquote>
 
 </div>

@@ -33,9 +33,12 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 ?>
 
 <div class="container">
-    <center class="text-muted" style="background:lightblue; margin-bottom: 50px; width: 95%;">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+    <center class="text-muted error-msg">
         <?= Yii::$app->session->getFlash('error'); ?>
     </center>
+    </div>
 </div>
 <div class="quotation-index container">
 
@@ -47,7 +50,7 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Supervisor : </label></div>
-        <div class="col-sm-8"><input type="text" class="form-control" name="supervisor_name"/></div>
+        <div class="col-sm-8"><input type="text" class="form-control" name="supervisor_name"/ value="<?= \amnah\yii2\user\models\Profile::findOne(Yii::$app->user->getId())->full_name; ?>"></div>
 
     </div>
 </div>
@@ -62,14 +65,14 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 </div>-->
 
 
-    <input type="hidden" class="form-control" name="template_ref" value="<?= $id;?>" />
-    <input type="hidden" class="form-control" name="user_id" value="<?= $user_id;?>" />
+<input type="hidden" class="form-control" name="template_ref" value="<?= $id;?>" />
+<input type="hidden" class="form-control" name="user_id" value="<?= $user_id;?>" />
 
 
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Status : </label></div>
-       <!-- <div class="col-sm-8"><input type="text" class="form-control" name="status" /></div>-->
+        <!-- <div class="col-sm-8"><input type="text" class="form-control" name="status" /></div>-->
         <div class="col-sm-8"><select class="form-control" name="status">
                 <option value="Pending"> Pending </option>
                 <option value="Approved"> Approved </option>
@@ -185,7 +188,7 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
         <?php }else{ ?>
             <div class="col-sm-1"><label  class="form-control">%</label></div>
         <?php }?>
-        <input type="hidden" id="calculation" value="<?=$calculation?>">
+        <input  type="hidden" class="form-control" name="calculation" value="<?= $calculation?>" />
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
 </div>
@@ -207,10 +210,10 @@ foreach($section as $value){
                     <div class="form-group eachLine">
 
                         <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
-                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_details[]" class="form-control" /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" /></div>
-                        <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" /></div>
+                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_details[]" class="form-control" placeholder="Details.." /></div>
+                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" placeholder="Costs.." /></div>
+                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" placeholder="<?=$calculation?>.."/></div>
+                        <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" placeholder="Total.." /></div>
                         <div class="col-sm-2">
                             <button class="btn btn-sm btn-danger delete"> Delete </button>
                             <button class="btn btn-sm btn-success add"> Add </button>
@@ -222,7 +225,24 @@ foreach($section as $value){
 
             <div class="row">
                 <div class="col-sm-8"></div>
-                <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_sub_total" class="<?= $sectionValue;?> form-control section_total" /></div>
+                <div class="col-sm-2"><input readonly  type="text" id="<?= $sectionValue;?>_sub_total_no_sc" name="<?= $sectionValue;?>_sub_total_no_sc" class="<?= $sectionValue;?> form-control" /></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>
+                        <input  type="checkbox" class="service_charge" id="check_id_<?=$sectionValue?>"> Add Service Charge @
+                        <input size="1" maxlength="3" type="text"  name="service_charge[]" class="service_charge" id="service_charge_<?=$sectionValue;?>"> %
+                    </label>
+                </div>
+                <div class="col-sm-5"></div>
+                <div class="col-sm-2"><input readonly  type="text" id="<?= $sectionValue;?>_sub_total_amount_sc" class="form-control" /></div>
+
+
+
+            </div>
+            <div class="row">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-2"><input readonly  type="text" id="<?= $sectionValue;?>_sub_total" name="<?= $sectionValue;?>_sub_total" class="<?= $sectionValue;?> form-control section_total" /></div>
             </div>
 
 
@@ -269,7 +289,11 @@ foreach($section as $value){
         <div class="col-sm-3">
 
             <label>
-                <input type="checkbox" id="check_id"> Add VAT @ 15%
+
+                <input  type="hidden"  name="company_vat_checked" value="0">
+                <input  type="checkbox" id="check_id" name="company_vat_checked" value="1"> Add VAT @
+                <input readonly  size="1" maxlength="2" type="text" value="15" name="company_vat" id="company_vat" style="background: #eee;"> %
+
             </label>
 
         </div>
@@ -311,10 +335,5 @@ foreach($section as $value){
 
 </form>
 
-
-
-<blockquote class="text-muted" style="background: #f5f5f5; font-size: 12px;">
-    * Cost per day
-</blockquote>
 
 </div>

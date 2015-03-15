@@ -19,13 +19,22 @@ $calculation = ['Units'=>'Units','Percentage'=>'Percentage'];
 
 ?>
 
+<div class="container">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <center class="text-muted error-msg">
+            <?= Yii::$app->session->getFlash('error'); ?>
+        </center>
+    </div>
+</div>
+
 <form onsubmit="return false;" id="templateForm">
 
 
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-2"><label class="form-control"> Name: </label></div>
-        <div class="col-sm-6"><input type="text" class="form-control" name="template_name"></div>
+        <div class="col-sm-6"><input type="text" class="form-control" name="template_name" ></div>
     </div>
 
     <div class="row">
@@ -41,17 +50,19 @@ $calculation = ['Units'=>'Units','Percentage'=>'Percentage'];
         </div>
     </div>
 
-    <div class="row">
+    <!--<div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-2"><label class="form-control"> Template Type: </label></div>
         <div class="col-sm-6"><select class="form-control" name="type">
                 <?php
-                foreach($type as $key=>$name) { ?>
-                    <option value="<?= $key; ?>"><?= $name; ?></option>
+/*                foreach($type as $key=>$name) { */?>
+                    <option value="<?/*= $key; */?>"><?/*= $name; */?></option>
                 <?php
-                } ?>
+/*                } */?>
             </select></div>
-    </div>
+    </div>-->
+
+    <input type="hidden" name="type" value="Quotation">
 
     <div class="row">
         <div class="col-sm-2"></div>
@@ -83,7 +94,7 @@ $calculation = ['Units'=>'Units','Percentage'=>'Percentage'];
 
     <center>
         <br><br>
-        <button id="formSubmit" class="btn btn-primary">Submit</button><br><br>
+        <button id="formSubmit" class="btn btn-primary">Create</button><br><br>
     </center>
 
 

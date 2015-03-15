@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\CompanySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Companies';
+$this->title = Yii::t('app', 'Companies');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-index">
@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Company', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {modelClass}', [
+    'modelClass' => 'Company',
+]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,11 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-           /* 'id',*/
+            'id',
             'company_name',
             'address',
             'established_date',
             'total_employee',
+             'contact_no',
+             'email:email',
+             'website',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
