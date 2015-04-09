@@ -25,6 +25,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'total_employee') ?>
 
+    <?php // echo $form->field($model, 'company_vat') ?>
+
     <?php // echo $form->field($model, 'contact_no') ?>
 
     <?php // echo $form->field($model, 'email') ?>

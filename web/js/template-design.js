@@ -37,17 +37,80 @@ $('body').on('click', '.add', function (e) {
 
 $('#templateForm').on('click', '#formSubmit', function (e) {
 
-        var data = $('form').serialize();
+    var data = $('form').serialize();
+
+    var ajaxCall = true;
+    var formObj = {};
+    var inputs = $('form').serializeArray();
+
+    $.each(inputs, function (i, input) {
+
+        formObj[input.name] = input.value;
+
+    });
+
+    template_name = $.trim(formObj.template_name);
+    calculation = $.trim(formObj.calculation);
+
+
+
+    if( template_name.length === 0 ) {
+        ajaxCall = false;
+        alert('Template  name must not be empty!');
+    }
+
+    if( calculation.length === 0 ) {
+        ajaxCall = false;
+        alert('Please, select calculation type!');
+    }
+
+    $.each($('input[name^="section_name"]'), function (i, input) {
+
+        field_name = $('input[name^="section'+i+'_field_name"]');
+
+        if(!field_name[0]){
+            ajaxCall = false;
+            alert('There should be at least one field!');
+        }
+
+
+      /*  $.each(field_name, function (i, input) {
+
+            field_name_value = input.value;
+
+            if( field_name_value.length === 0 ) {
+                ajaxCall = false;
+                alert('Field name must not be empty!');
+            }
+
+        });*/
+
+
+
+    });
+
+
+
+    if(ajaxCall) {
         $.ajax({
-            type     :'POST',
-            cache    : false,
+            type: 'POST',
+            cache: false,
             data: data,
-            url  : 'form',
-            success  : function(response) {
-               console.log(response);
+            url: 'form',
+            success: function (response) {
+                //console.log(response);
+                var data = JSON.parse(response);
+
+                if(data.id){
+                    id = data.id;
+                    window.location.replace("view-template?id="+id);
+                }
+            },
+            error: function() {
+                alert("There was an error. Try again please!");
             }
         });
-
+    }
 
 });
 
@@ -55,15 +118,76 @@ $('#templateForm').on('click', '#formSubmit', function (e) {
 $('#templateForm').on('click', '#formUpdate', function (e) {
 
     var data = $('form').serialize();
-    $.ajax({
-        type     :'POST',
-        cache    : false,
-        data: data,
-        url  : 'update-form',
-        success  : function(response) {
-            console.log(response);
-        }
+
+    var ajaxCall = true;
+    var formObj = {};
+    var inputs = $('form').serializeArray();
+
+    $.each(inputs, function (i, input) {
+
+        formObj[input.name] = input.value;
+
     });
+
+    template_name = $.trim(formObj.template_name);
+
+    if( template_name.length === 0 ) {
+        ajaxCall = false;
+        alert('Template  name must not be empty!');
+    }
+
+    $.each($('input[name^="section_name"]'), function (i, input) {
+
+        field_name = $('input[name^="section'+i+'_field_name"]');
+
+        if(!field_name[0]){
+            ajaxCall = false;
+            alert('There should be at least one field!');
+        }
+
+
+       /* $.each(field_name, function (i, input) {
+
+            field_name_value = input.value;
+
+            if( field_name_value.length === 0 ) {
+                ajaxCall = false;
+                alert('Field name must not be empty!');
+            }
+
+        });*/
+
+
+
+    });
+
+
+
+
+    if(ajaxCall){
+
+        $.ajax({
+            type     :'POST',
+            cache    : false,
+            data: data,
+            url  : 'update-form',
+            success  : function(response) {
+                //console.log(response);
+                var data = JSON.parse(response);
+
+                if(data.id){
+                    id = data.id;
+                    window.location.replace("view-template?id="+id);
+                }
+            },
+            error: function() {
+                alert("There was an error. Try again please!");
+            }
+        });
+    }
+
+
+
 
 
 });

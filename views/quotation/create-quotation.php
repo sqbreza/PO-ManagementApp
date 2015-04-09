@@ -150,11 +150,11 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 
             <?= DatePicker::widget([
                 'name' => 'date',
-                'value' =>date("d-m-Y"),
+                'value' =>date('d-m-Y'),
                 'template' => '{addon}{input}',
                 'clientOptions' => [
                     'autoclose' => true,
-                    'format' => 'dd-mm-yyyy'
+                     'format' => 'dd-mm-yyyy'
                 ]
             ]);?>
 
@@ -176,10 +176,12 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
 <div class="row" style="margin-top:50px;">
     <div class="form-group">
         <div class="col-sm-3"><label  class="form-control">Field </label></div>
-        <div class="col-sm-3"><label  class="form-control">Details</label></div>
-        <div class="col-sm-1"><label  class="form-control">Cost*</label></div>
+        <div class="col-sm-2"><label  class="form-control">Details</label></div>
+        <div class="col-sm-2"><label  class="form-control">Cost*</label></div>
         <?php
         $calculation = Template::find()->select('calculation')->where('id = :id',['id'=>$id])->one()->calculation;
+
+
 
         if($calculation == 'Units'){ ?>
 
@@ -188,20 +190,25 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
         <?php }else{ ?>
             <div class="col-sm-1"><label  class="form-control">%</label></div>
         <?php }?>
-        <input  type="hidden" class="form-control" name="calculation" value="<?= $calculation?>" />
+        <input  type="hidden" class="form-control" id="calculation" name="calculation" value="<?= $calculation?>" />
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
 </div>
 
 <?php
-foreach($section as $value){
-    $sectionValue = preg_replace('/\s+/', '', $value['section']);
+foreach($section as $key=>$value){
+    //$sectionValue = preg_replace('/\s+/', '', $value['section']);
+    $sectionValue = $key;
     $result =TemplateFields::find()->where(['template_id'=>$id,'section'=>$value['section']])->orderBy('id')->asArray()->all();
     ?>
     <div class="row">
-        <h4> <?= $value['section'];?></h4>
+        <!--<h4> <?/*= $value['section'];*/?></h4>-->
         <div class="addSection" id="<?= $sectionValue;?>">
-            <input type="hidden" name="section_name[]" value="<?= $value['section'];?>">
+            <div class="row">
+                <div class="col-sm-3"><input type="text" class="form-control section" name="section_name[]" value="<?= $value['section'];?>"></div>
+                <div class="col-sm-9"></div>
+            </div>
+            <br>
             <?php
             foreach($result as $val){
 
@@ -210,8 +217,8 @@ foreach($section as $value){
                     <div class="form-group eachLine">
 
                         <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
-                        <div class="col-sm-3"><input type="text" name="<?= $sectionValue;?>_details[]" class="form-control" placeholder="Details.." /></div>
-                        <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" placeholder="Costs.." /></div>
+                        <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_details[]" class="form-control" placeholder="Details.." /></div>
+                        <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" placeholder="Costs.." /></div>
                         <div class="col-sm-1"><input type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" placeholder="<?=$calculation?>.."/></div>
                         <div class="col-sm-2"><input type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" placeholder="Total.." /></div>
                         <div class="col-sm-2">

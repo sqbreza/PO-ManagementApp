@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use amnah\yii2\user\models\User;
 use Yii;
 
 /**
@@ -26,10 +27,12 @@ use Yii;
  * @property string $calculation
  * @property double $vat
  * @property string $service_charge
+ * @property string $amount_words
  * @property string $created_time
  *
  * @property Clients $clientCompany
  * @property Company $company
+ * @property User $user
  */
 class Quotation extends \yii\db\ActiveRecord
 {
@@ -52,7 +55,7 @@ class Quotation extends \yii\db\ActiveRecord
             [['amount','vat'], 'number'],
             [['date', 'created_time'], 'safe'],
             [['note_up', 'note_down','calculation','service_charge'], 'string'],
-            [['ref', 'project_name', 'project_name_header', 'po_no', 'status'], 'string', 'max' => 255],
+            [['ref', 'project_name', 'project_name_header', 'po_no', 'status','amount_words'], 'string', 'max' => 255],
             [['supervisor_name'], 'string', 'max' => 11],
 
 
@@ -84,7 +87,9 @@ class Quotation extends \yii\db\ActiveRecord
             'calculation' => Yii::t('app', 'Calculation'),
             'vat' => Yii::t('app', 'Vat'),
             'service_charge' => Yii::t('app', 'Service Charge'),
+            'amount_words' => Yii::t('app', 'Amount words'),
             'created_time' => Yii::t('app', 'Created Time'),
+            'user.username' => Yii::t('app', 'User Name'),
         ];
     }
 
@@ -96,6 +101,7 @@ class Quotation extends \yii\db\ActiveRecord
         return $this->hasOne(Clients::className(), ['id' => 'client_company_id']);
     }
 
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -103,4 +109,11 @@ class Quotation extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
+
+    public function getUser()
+    {
+        $user = Yii::$app->getModule("user")->model("User");
+        return $this->hasOne($user::className(), ['id' => 'user_id']);
+    }
+
 }

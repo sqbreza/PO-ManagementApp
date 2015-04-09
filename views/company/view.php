@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'address',
             'established_date',
             'total_employee',
+            'company_vat',
             'contact_no',
             'email:email',
             'website',

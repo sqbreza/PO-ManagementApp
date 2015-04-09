@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'total_employee')->textInput() ?>
 
+    <?= $form->field($model, 'company_vat')->textInput() ?>
+
     <?= $form->field($model, 'contact_no')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>

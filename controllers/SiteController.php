@@ -91,7 +91,7 @@ class SiteController extends Controller
        // $mpdf->SetHTMLFooter ($footer);
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter ($footer);
-        $mpdf->SetWatermarkImage ($watermark,0.3, '',array(0,0));
+        $mpdf->SetWatermarkImage ($watermark,0.1, '',array(0,0));
         $mpdf->showWatermarkImage = true;
         $pdf->content = $htmlContent;
         return $pdf->render();

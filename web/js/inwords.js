@@ -7,16 +7,16 @@
 
 function NumberToWords() {
 
-    var units = [ " ", "One", "Two", "Three", "Four", "Five", "Six",
-        "Seven", "Eight", "Nine", "Ten" ];
-    var teens = [ "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
-        "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty" ];
-    var tens = [ "", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty",
-        "Seventy", "Eighty", "Ninety" ];
+    var units = [ " ", "one", "two", "three", "four", "five", "six",
+        "seven", "eight", "nine", "ten" ];
+    var teens = [ "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+        "sixteen", "seventeen", "eighteen", "nineteen", "twenty" ];
+    var tens = [ "", "ten", "twenty", "thirty", "forty", "fifty", "sixty",
+        "seventy", "eighty", "ninety" ];
 
-    var othersBd = [ "Thousand", "Lac", "Crore" ];
+    var othersBd = [ "thousand", "lac", "crore" ];
 
-    var othersIntl = [ "Thousand", "Million", "Billion", "Trillion" ];
+    var othersIntl = [ "thousand", "million", "billion", "trillion" ];
 
     var BD_MODE = "bd";
     var INTERNATIONAL_MODE = "international";

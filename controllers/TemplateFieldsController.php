@@ -121,8 +121,13 @@ class TemplateFieldsController extends Controller
 
         $results = $_POST['section_name'];
         $company_id = $_POST['company_id'];
-        $type = $_POST['type'];
-        $calculation = $_POST['calculation'];
+        $type = "Quotation";
+        if(!empty($_POST['calculation'])){
+            $calculation = $_POST['calculation'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Calculation type must not be empty!');
+            return $this->redirect('create-template');
+        }
 
         try{
 
@@ -157,6 +162,8 @@ class TemplateFieldsController extends Controller
             }
             if($isSave) {
                 $transaction->commit();
+                Yii::$app->getSession()->setFlash('error', 'Template successfully created!');
+                echo json_encode(['id'=>$id]);
             }
 
         } catch(Exception $e) {
@@ -165,14 +172,13 @@ class TemplateFieldsController extends Controller
 
         }
 
-        return $this->redirect(['template/index']);
+       // return $this->redirect(['template/index']);
     }
 
     public function actionUpdateForm()
     {
         $isSave = true;
 
-        print_r($_POST);
 
         $connection = \Yii::$app->db;
         $transaction = $connection->beginTransaction();
@@ -186,8 +192,14 @@ class TemplateFieldsController extends Controller
 
         $results = $_POST['section_name'];
         $company_id = $_POST['company_id'];
-        $type = $_POST['type'];
-        $calculation = $_POST['calculation'];
+        $type = 'Quotation';
+        if(!empty($_POST['calculation'])){
+            $calculation = $_POST['calculation'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Calculation type must not be empty!');
+            return $this->redirect('create-template');
+        }
+
         $id = $_POST['id'];
 
         try{
@@ -229,6 +241,8 @@ class TemplateFieldsController extends Controller
             }
             if($isSave) {
                 $transaction->commit();
+                Yii::$app->getSession()->setFlash('error', 'Template information successfully updated!');
+                echo json_encode(['id'=>$id]);
             }
 
         } catch(Exception $e) {
@@ -236,7 +250,7 @@ class TemplateFieldsController extends Controller
 
         }
 
-        return $this->redirect(['template/index',]);
+       // return $this->redirect(['template/index',]);
 
     }
 

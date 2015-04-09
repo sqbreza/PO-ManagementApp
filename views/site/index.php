@@ -37,8 +37,9 @@ $this->title = 'Ice9 Interactive';
                     <div class="home_link">Clients</div>
                 </div>
             </a>
-            <!-- <a href="user/admin/create"><div class="col-sm-3 home_item text-center text-info"> <div class="home_link">Create User </div> </div></a>-->
-            <a href="#">
+            <!-- <a href="user/admin/admin"><div class="col-sm-3 home_item text-center text-info"> <div class="home_link">Create User </div> </div></a>-->
+
+            <a href="user/admin/index">
                 <div class="col-sm-3 home_item text-center text-info">
                     <div class="home_link">Create User</div>
                 </div>

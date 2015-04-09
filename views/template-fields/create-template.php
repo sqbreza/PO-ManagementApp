@@ -68,6 +68,7 @@ $calculation = ['Units'=>'Units','Percentage'=>'Percentage'];
         <div class="col-sm-2"></div>
         <div class="col-sm-2"><label class="form-control"> Calculation Type: </label></div>
         <div class="col-sm-6"><select class="form-control" name="calculation">
+                <option selected="selected" disabled="disabled">Select one..</option>
                 <?php
                 foreach($calculation as $key=>$name) { ?>
                     <option value="<?= $key; ?>"><?= $name; ?></option>

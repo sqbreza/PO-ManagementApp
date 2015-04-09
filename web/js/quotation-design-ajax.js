@@ -1,10 +1,49 @@
 $('body').on('click', '#save', function (e) {
 
-
-
+    var ajaxCall = true;
+    var formObj = {};
     var formData = new FormData($('form')[0]);
 
+    inputs = $('form').serializeArray();
 
+
+    $.each(inputs, function (i, input) {
+        formObj[input.name] = input.value;
+    });
+
+
+    supervisor_name = $.trim(formObj.supervisor_name);
+    project_name = $.trim(formObj.project_name);
+    project_name_header = $.trim(formObj.project_name_header);
+    grand_total = $.trim(formObj.grand_total);
+    amounts_in_word = $.trim(formObj.amounts_in_word);
+
+    if( supervisor_name.length === 0 ) {
+        ajaxCall = false;
+        alert('Supervisor name must not be empty!');
+    }
+
+    if( project_name.length === 0 ) {
+        ajaxCall = false;
+        alert('Project name must not be empty!');
+    }
+
+    if( project_name_header.length === 0 ) {
+        ajaxCall = false;
+        alert('Project name header must not be empty!');
+    }
+
+    if( grand_total.length === 0 ) {
+        ajaxCall = false;
+        alert('Grand total must not be empty!');
+    }
+
+    if( amounts_in_word.length === 0 ) {
+        ajaxCall = false;
+        alert('Amounts in words must not be empty!');
+    }
+
+    if(ajaxCall){
 
     $.ajax({
         url  : 'form',
@@ -12,12 +51,22 @@ $('body').on('click', '#save', function (e) {
         data: formData,
         async: false,
         success: function (data) {
-            console.log(data);
+
+            var data = JSON.parse(data);
+
+            if(data.id){
+                id = data.id;
+                window.location.replace("view-quotation?id="+id);
+            }
+        },
+        error: function() {
+            alert("There was an error. Try again please!");
         },
         cache: false,
         contentType: false,
         processData: false
     });
+    }
 
     return false;
 
@@ -26,22 +75,71 @@ $('body').on('click', '#save', function (e) {
 
 
 $('body').on('click', '#update', function (e) {
-
-
+    var ajaxCall = true;
+    var formObj = {};
     var formData = new FormData($('form')[0]);
 
-    $.ajax({
-        url  : 'form-update',
-        type: 'POST',
-        data: formData,
-        async: false,
-        success: function (data) {
-            console.log(data);
-        },
-        cache: false,
-        contentType: false,
-        processData: false
+    inputs = $('form').serializeArray();
+
+
+    $.each(inputs, function (i, input) {
+        formObj[input.name] = input.value;
     });
+
+    supervisor_name = $.trim(formObj.supervisor_name);
+    project_name = $.trim(formObj.project_name);
+    project_name_header = $.trim(formObj.project_name_header);
+    grand_total = $.trim(formObj.grand_total);
+    amounts_in_word = $.trim(formObj.amounts_in_word);
+
+    if( supervisor_name.length === 0 ) {
+        ajaxCall = false;
+        alert('Supervisor name must not be empty!');
+    }
+
+    if( project_name.length === 0 ) {
+        ajaxCall = false;
+        alert('Project name must not be empty!');
+    }
+
+    if( project_name_header.length === 0 ) {
+        ajaxCall = false;
+        alert('Project name header must not be empty!');
+    }
+
+    if( grand_total.length === 0 ) {
+        ajaxCall = false;
+        alert('Grand total must not be empty!');
+    }
+
+    if( amounts_in_word.length === 0 ) {
+        ajaxCall = false;
+        alert('Amounts in words must not be empty!');
+    }
+
+    if(ajaxCall){
+
+     $.ajax({
+         url  : 'form-update',
+         type: 'POST',
+         data: formData,
+         async: false,
+         success: function (data) {
+             var data = JSON.parse(data);
+
+             if(data.id){
+                 id = data.id;
+                 window.location.replace("view-quotation?id="+id);
+             }
+         },
+         error: function() {
+             alert("There was an error. Try again please!");
+         },
+         cache: false,
+         contentType: false,
+         processData: false
+     });
+    }
 
     return false;
 
@@ -49,8 +147,6 @@ $('body').on('click', '#update', function (e) {
 
 
 $('body').on('click', '#file_delete', function (e) {
-
-
 
 
 });
@@ -74,6 +170,23 @@ function deleteFile(filename,ref){
 
 
             });
+
+        }
+    });
+
+    return false;
+}
+
+
+function deleteQuotation(id,ref){
+
+    $.ajax({
+        url  : 'delete-quotation',
+        type: 'POST',
+        data: {"id":id,"ref":ref},
+
+        success: function (data) {
+            console.log(data);
 
         }
     });

@@ -14,6 +14,7 @@ use app\models\Quotation;
 use app\models\Template;
 
 
+
 $this->registerCssFile(Yii::getAlias('@web').'/jQueryTE/jquery-te-1.4.0.css', ['depends' => [yii\web\JqueryAsset::className()]]);
 $this->registerJsFile(Yii::getAlias('@web').'/jQueryTE/jquery-te-1.4.0.min.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 
@@ -36,6 +37,16 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 
 ?>
 
+<?php if ((Yii::$app->user->can("admin")) AND ($model->status == 'Pending')) { ?>
+
+<div class="row">
+    <div class="col-sm-12">
+        <button class=" btn btn-primary col-sm-1" id="delete" onclick="deleteQuotation('<?= $model->id;?>','<?= $model->ref;?>');" > Delete </button>
+    </div>
+</div>
+
+<?php } ?>
+
 <div class="container">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
@@ -45,9 +56,9 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
     </div>
 </div>
 
+
+
 <div class="quotation-index container">
-
-
 
 <form class="form-horizontal" onsubmit="return false;"  enctype="multipart/form-data">
 
@@ -162,7 +173,8 @@ $red = "style='background:orange'";
 
             <?= DatePicker::widget([
                 'name' => 'date',
-                'value' =>date("d-m-Y"),
+               // 'value' =>date("d-m-Y"),
+                'value' =>Yii::$app->formatter->asDatetime($model->date, "php:d-m-Y"),
                 'template' => '{addon}{input}',
                 'clientOptions' => [
                     'autoclose' => true,
@@ -190,8 +202,8 @@ $red = "style='background:orange'";
 
 <div class="row" style="margin-top:50px;">
     <div class="form-group">
-        <div class="col-sm-2"><label  class="form-control">Field </label></div>
-        <div class="col-sm-3"><label  class="form-control">Details</label></div>
+        <div class="col-sm-3"><label  class="form-control">Field </label></div>
+        <div class="col-sm-2"><label  class="form-control">Details</label></div>
         <div class="col-sm-2"><label  class="form-control">Cost</label></div>
         <?php
         $calculation = Quotation::find()->select('calculation')->where('id = :id',['id'=>$model->id])->one()->calculation;
@@ -204,31 +216,41 @@ $red = "style='background:orange'";
         <?php }else{ ?>
             <div class="col-sm-1"><label  class="form-control">%</label></div>
         <?php }?>
-        <input  type="hidden" id="calculation" value="<?=$calculation?>">
         <div class="col-sm-2"><label  class="form-control">Total</label></div>
     </div>
-    <input  type="hidden" class="form-control" name="calculation" value="<?= $calculation?>" />
+    <input  type="hidden" class="form-control" id="calculation" name="calculation" value="<?= $calculation?>" />
 </div>
 
     <?php
 
         $service_key = 0;
-        foreach($section as $value){
-            $sectionValue = preg_replace('/\s+/', '', $value['section']);
+        foreach($section as $key=>$value){
+            //$sectionValue = preg_replace('/\s+/', '', $value['section']);
+            $sectionValue = $key;
             $result =QuotationRef::find()->where(['ref'=>$model->ref,'section'=>$value['section']])->orderBy('id')->asArray()->all();
     ?>
     <div class="row">
-        <h4> <?= $value['section'];?></h4>
-        <div class="addSection" id="<?=$sectionValue;?>">
-            <input  type="hidden" name="section_name[]" value="<?= $value['section'];?>">
-            <?php
+       <!-- <h4> <?/*= $value['section'];*/?></h4>
+        <div class="addSection" id="<?/*=$sectionValue;*/?>">
+            <input  type="hidden" name="section_name[]" value="<?/*= $value['section'];*/?>">-->
+
+            <!--<h4> <?/*= $value['section'];*/?></h4>-->
+        <!--<h4> <?/*= $value['section'];*/?></h4>-->
+        <div class="addSection" id="<?= $sectionValue;?>">
+            <div class="row">
+                <div class="col-sm-3"><input type="text" class="form-control section" name="section_name[]" value="<?= $value['section'];?>"></div>
+                <div class="col-sm-9"></div>
+            </div>
+            <br>
+
+                <?php
             foreach($result as $val){
 
                 ?>
                 <div class="addLine">
                     <div class="form-group eachLine">
-                        <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
-                        <div class="col-sm-3"><input  type="text" name="<?= $sectionValue;?>_details[]" class="form-control" value="<?= $val['details'];?>" /></div>
+                        <div class="col-sm-3"><input  type="text" name="<?= $sectionValue;?>_field_names[]" class="form-control" value="<?= $val['field_name'];?>" /></div>
+                        <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_details[]" class="form-control" value="<?= $val['details'];?>" /></div>
                         <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_costs[]" class="costs form-control" value="<?= $val['cost_day'];?>" /></div>
                         <div class="col-sm-1"><input  type="text" name="<?= $sectionValue;?>_units[]" class="units form-control" value="<?= $val['units'];?>"/></div>
                         <div class="col-sm-2"><input  type="text" name="<?= $sectionValue;?>_total[]" class="total form-control" value="<?= $val['total'];?>"/></div>
@@ -304,7 +326,7 @@ $red = "style='background:orange'";
         <div class="col-sm-2">
             <label>
                 <input  type="hidden" name="show_section_amount" value="1">
-                <input  type="checkbox" id="" name="show_section_amount" value="0"> Hide sub-total in Template
+                <input  <?php if($model->show_section_amount !=1) echo 'checked';?> type="checkbox" id="" name="show_section_amount" value="0"> Hide sub-total in Template
 
             </label>
         </div>
@@ -312,14 +334,14 @@ $red = "style='background:orange'";
 
             <label>
                 <input  type="hidden"  name="company_vat_checked" value="0">
-                <input  type="checkbox" id="check_id" name="company_vat_checked" value="1"> Add VAT @
-                <input readonly  size="1" maxlength="2" type="text" value="15" name="company_vat" id="company_vat" style="background: #eee;"> %
+                <input  type="checkbox" <?php if($model->vat !=0) echo 'checked';?> id="check_id" name="company_vat_checked" value="1"> Add VAT @
+                <input readonly  size="1" maxlength="2" type="text" value="<?= Company::findOne($model->company_id)->company_vat; ?>" name="company_vat" id="company_vat" style="background: #eee;"> %
 
             </label>
 
         </div>
         <div class="col-sm-3"><label class="form-control">Grand total:</label></div>
-        <div class="col-sm-2"><input  type="text" name="grand_total" class="form-control" id="grand_total" value="<?= $model->amount;?>"/></div>
+        <div class="col-sm-2"><input readonly  type="text" name="grand_total" class="form-control" id="grand_total" value="<?= $model->amount;?>"/></div>
     </div>
 </div>
 
@@ -371,8 +393,9 @@ $red = "style='background:orange'";
         <div class="col-sm-3"></div>
         <div class="col-sm-6">
             <button class="col-sm-3 btn btn-success" id="update" style="margin-left: 2px;"> Update </button>
-            <a href="<?=Yii::getAlias('@web')?>/site/qpdf/<?=$model->id?>" target="_blank" class="btn btn-danger col-sm-3" style="margin-left: 2px;">view PDF</a>
+            <a href="<?=Yii::getAlias('@web')?>/site/qpdf/<?=$model->id?>" target="_blank" class="btn btn-info col-sm-3" style="margin-left: 2px;">View as PDF</a>
             <button class=" btn btn-primary col-sm-3" id="save" style="margin-left: 2px;"> Save as New </button>
+
         </div>
 
     </div>
@@ -382,7 +405,6 @@ $red = "style='background:orange'";
 
 
 </form>
-
 
 
 </div>

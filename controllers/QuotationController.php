@@ -107,6 +107,13 @@ class QuotationController extends Controller
             return $this->redirect('create-quotation?id='.$template_ref);
         }
 
+        if(!empty($_POST['amounts_in_word'])){
+            $amounts_in_word = $_POST['amounts_in_word'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Amount in words must not be empty!');
+            return $this->redirect('view-quotation?id='.$template_ref);
+        }
+
 
         if(!empty($_POST['note_up'])){
             $note_up = $_POST['note_up'];
@@ -164,7 +171,8 @@ class QuotationController extends Controller
             foreach($results as $key=>$value){
 
                 $actual_section_name =  $value;
-                $section_name =  preg_replace('/\s+/', '', $value);
+                //$section_name =  preg_replace('/\s+/', '', $value);
+                $section_name = $key;
                 $field_names = $_POST[$section_name."_field_names"];
                 $details = $_POST[$section_name."_details"];
                 $costs = $_POST[$section_name."_costs"];
@@ -199,7 +207,7 @@ class QuotationController extends Controller
             $model->client_company_id = $client_company_id;
             $model->amount = $grand_total;
             $model->po_no = $po_no;
-            $model->date = date('Y-m-d', strtotime(str_replace('-', '/', $date)));
+            $model->date = Yii::$app->formatter->asDatetime($date, "php:Y-m-d");
             $model->status = $status;
             $model->user_id = $user_id;
             $model->supervisor_name = $supervisor_name;
@@ -210,6 +218,7 @@ class QuotationController extends Controller
             $model->calculation = $calculation;
             $model->vat = $vat;
             $model->service_charge = $service_charge;
+            $model->amount_words = $amounts_in_word;
 
             $model->created_time = date('Y-m-d H:i:s');
 
@@ -222,7 +231,8 @@ class QuotationController extends Controller
             if($isSave) {
                 $transaction->commit();
                 Yii::$app->getSession()->setFlash('error', 'Successfully Added !');
-                return $this->redirect('view-quotation?id='.$mId);
+                echo json_encode(['id'=>$mId]);
+                //return $this->redirect('view-quotation?id='.$mId);
                 //return $this->redirect('create-quotation?id='.$template_ref);
             }else{
                 $model = new RefGenerator();
@@ -245,8 +255,6 @@ class QuotationController extends Controller
     {
 
 
-
-        print_r($_POST);
 
         $isSave = true;
 
@@ -304,6 +312,13 @@ class QuotationController extends Controller
             return $this->redirect('view-quotation?id='.$model_id);
         }
 
+        if(!empty($_POST['amounts_in_word'])){
+            $amounts_in_word = $_POST['amounts_in_word'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Amount in words must not be empty!');
+            return $this->redirect('view-quotation?id='.$model_id);
+        }
+
 
         if(!empty($_POST['note_up'])){
             $note_up = $_POST['note_up'];
@@ -356,7 +371,8 @@ class QuotationController extends Controller
 
             foreach($results as $key=>$value){
                 $actual_section_name =  $value;
-                $section_name =  preg_replace('/\s+/', '', $value);
+                //$section_name =  preg_replace('/\s+/', '', $value);
+                $section_name =  $key;
                 $field_names = $_POST[$section_name."_field_names"];
                 $details = $_POST[$section_name."_details"];
                 $costs = $_POST[$section_name."_costs"];
@@ -391,7 +407,7 @@ class QuotationController extends Controller
             $model->client_company_id = $client_company_id;
             $model->amount = $grand_total;
             $model->po_no = $po_no;
-            $model->date = date('Y-m-d', strtotime(str_replace('-', '/', $date)));
+            $model->date = Yii::$app->formatter->asDatetime($date, "php:Y-m-d");;
             $model->status = $status;
             $model->user_id = $user_id;
             $model->supervisor_name = $supervisor_name;
@@ -402,6 +418,7 @@ class QuotationController extends Controller
             $model->calculation = $calculation;
             $model->vat = $vat;
             $model->service_charge = $service_charge;
+            $model->amount_words = $amounts_in_word;
 
             $model->created_time = date('Y-m-d H:i:s');
 
@@ -416,7 +433,8 @@ class QuotationController extends Controller
 
                 $transaction->commit();
                 Yii::$app->getSession()->setFlash('error', 'Successfully Updated !');
-                return $this->redirect('view-quotation?id='.$model_id);
+                echo json_encode(['id'=>$model_id]);
+                //return $this->redirect('view-quotation?id='.$model_id);
             }else{
 
                 Yii::$app->getSession()->setFlash('error', 'An error occurred during submit process, fill up all the fields correctly and submit again');
@@ -458,6 +476,72 @@ class QuotationController extends Controller
             $files = FileArchive::find()->where('ref=:ref',['ref'=>$ref])->asArray()->all();
             echo json_encode($files);
             }
+
+
+    }
+
+    public function actionDeleteQuotation()
+    {
+
+        if (Yii::$app->user->can("admin")) {
+            $isSave = false;
+            $connection = \Yii::$app->db;
+            $transaction = $connection->beginTransaction();
+            $id = $_POST['id'];
+            $ref = $_POST['ref'];
+
+
+
+
+            try{
+               if( QuotationRef::deleteAll('ref = :ref',['ref'=>$ref])){
+                   if(Quotation::deleteAll('id = :id',['id'=>$id])){
+                       if(FileArchive::deleteAll('ref=:ref',['ref'=>$ref])){
+                           $files = FileArchive::find()->select(['file_name'])->where('ref = :ref',['ref'=>$ref])->asArray()->all();
+
+                           foreach ($files as $val){
+                               $file_name = $val['file_name'];
+                               if (!unlink('uploads/'.$file_name)) {
+                                   return false;
+                               }
+                           }
+
+                           $isSave = true;
+                       }else{
+                           $isSave = true;
+                       }
+                   }
+
+               }
+                if($isSave) {
+
+                    $transaction->commit();
+                    return $this->redirect('index');
+                }
+
+
+            }catch (Exception $e){
+                $transaction->rollback();
+            }
+
+
+
+
+
+
+        }else{
+            echo 'You are not allowed to perform this action.';
+        }
+
+
+
+        /*if (!unlink('uploads/'.$file_name)) {
+            return false;
+        }else{
+            FileArchive::deleteAll('file_name=:file_name',['file_name'=>$file_name]);
+            $files = FileArchive::find()->where('ref=:ref',['ref'=>$ref])->asArray()->all();
+            echo json_encode($files);
+        }*/
 
 
     }

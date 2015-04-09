@@ -1,4 +1,4 @@
-$('.addLine').on("keyup keypress", function(e) {
+$('.form-control').on("keyup keypress", function(e) {
     var code = e.keyCode || e.which;
     if (code  == 13) {
         e.preventDefault();
@@ -18,7 +18,7 @@ $('body').on('click', '.delete', function (e) {
 $('body').on('click', '.add', function (e) {
     var divItem =$(this).parents('.addSection');
     nameOfSectionId = divItem.attr("id");
-    $(this).parents('.addLine').after("<div class='addLine'><div class='form-group eachLine'><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_field_names[]' class='form-control' /></div><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_details[]' class='form-control'/></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_costs[]' class='costs form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_units[]'class='units form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_total[]' class='total form-control'/></div><div class='col-sm-2'><button class='btn btn-sm btn-danger delete'>Delete</button> <button class='btn btn-sm btn-success add'>Add</button></div></div></div>");
+    $(this).parents('.addLine').after("<div class='addLine'><div class='form-group eachLine'><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_field_names[]' class='form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_details[]' class='form-control'/></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_costs[]' class='costs form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_units[]'class='units form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_total[]' class='total form-control'/></div><div class='col-sm-2'><button class='btn btn-sm btn-danger delete'>Delete</button> <button class='btn btn-sm btn-success add'>Add</button></div></div></div>");
 });
 
 
@@ -29,6 +29,7 @@ $('body').on('click', '.add', function (e) {
 $( ".addSection" ).on('keyup','.costs,.units',function() {
 
     var calc = $('#calculation').val();
+
 
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();
@@ -104,10 +105,19 @@ function grandTotal(){
         grand_total = parseFloat(grand_total+vat);
         grand_total = grand_total.toFixed(2);
         $('#grand_total').val(grand_total);
+        var num2words = new NumberToWords();
+        num2words.setMode("bd");
+        var bd = num2words.numberToWords(grand_total);
+        $('#amount_in_words').val(bd);
 
     }else{
         $('#grand_total').val($('#sum_total').val());
+        var num2words = new NumberToWords();
+        num2words.setMode("bd");
+        var bd = num2words.numberToWords($('#sum_total').val());
+        $('#amount_in_words').val(bd);
     }
+
 }
 
 function totalAmount(section_id){
@@ -192,6 +202,7 @@ $(document).ready(function(){
         section_id = $(v).attr('id');
         totalAmount(section_id);
         serviceCharge('check_id_'+section_id);
+        grandTotal()
 
     });
 

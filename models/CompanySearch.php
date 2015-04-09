@@ -20,6 +20,7 @@ class CompanySearch extends Company
         return [
             [['id', 'total_employee'], 'integer'],
             [['company_name', 'address', 'established_date', 'contact_no', 'email', 'website'], 'safe'],
+            [['company_vat'], 'number'],
         ];
     }
 
@@ -59,6 +60,7 @@ class CompanySearch extends Company
             'id' => $this->id,
             'established_date' => $this->established_date,
             'total_employee' => $this->total_employee,
+            'company_vat' => $this->company_vat,
         ]);
 
         $query->andFilterWhere(['like', 'company_name', $this->company_name])
