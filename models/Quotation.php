@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use amnah\yii2\user\models\User;
 use Yii;
 
 /**
@@ -32,7 +31,6 @@ use Yii;
  *
  * @property Clients $clientCompany
  * @property Company $company
- * @property User $user
  */
 class Quotation extends \yii\db\ActiveRecord
 {
@@ -89,7 +87,6 @@ class Quotation extends \yii\db\ActiveRecord
             'service_charge' => Yii::t('app', 'Service Charge'),
             'amount_words' => Yii::t('app', 'Amount words'),
             'created_time' => Yii::t('app', 'Created Time'),
-            'user.username' => Yii::t('app', 'User Name'),
         ];
     }
 
@@ -101,7 +98,6 @@ class Quotation extends \yii\db\ActiveRecord
         return $this->hasOne(Clients::className(), ['id' => 'client_company_id']);
     }
 
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -109,11 +105,4 @@ class Quotation extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
-
-    public function getUser()
-    {
-        $user = Yii::$app->getModule("user")->model("User");
-        return $this->hasOne($user::className(), ['id' => 'user_id']);
-    }
-
 }

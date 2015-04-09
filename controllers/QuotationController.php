@@ -54,7 +54,7 @@ class QuotationController extends Controller
     public function actionForm()
     {
 
-        print_r($_POST);
+     
 
         $isSave = true;
         $connection = \Yii::$app->db;

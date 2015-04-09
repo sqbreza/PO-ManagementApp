@@ -30,7 +30,6 @@ class QuotationSearch extends Quotation
             [['ref', 'project_name', 'date', 'po_no', 'status', 'supervisor_name'], 'safe'],
             [['clients.client_name'],'safe'],
             [['company.company_name'],'safe'],
-            [['user.username'],'safe'],
         ];
     }
 
@@ -46,7 +45,7 @@ class QuotationSearch extends Quotation
     public function attributes()
     {
         // add related fields to searchable attributes
-        return array_merge(parent::attributes(), ['company.company_name', 'clients.client_name','user.username']);
+        return array_merge(parent::attributes(), ['company.company_name', 'clients.client_name']);
     }
     /**
      * Creates data provider instance with search query applied
@@ -58,17 +57,7 @@ class QuotationSearch extends Quotation
     public function search($params)
     {
         $query = Quotation::find();
-
-        $user = Yii::$app->getModule("user")->model("User");
-        $userTable = $user::tableName();
-
         $query->joinWith(['clients', 'company']);
-
-        $query->joinWith(['user' => function($query) use ($userTable) {
-            $query->from(['user' => $userTable]);
-        }]);
-
-
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -82,11 +71,6 @@ class QuotationSearch extends Quotation
        $dataProvider->sort->attributes['company.company_name'] = [
             'asc' => ['company.company_name' => SORT_ASC],
             'desc' => ['company.company_name' => SORT_DESC],
-        ];
-
-        $dataProvider->sort->attributes['user.username'] = [
-            'asc' => ['user.username' => SORT_ASC],
-            'desc' => ['user.username' => SORT_DESC],
         ];
 
         /*$dataProvider->setSort([
@@ -123,8 +107,7 @@ class QuotationSearch extends Quotation
             ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'supervisor_name', $this->supervisor_name])
             ->andFilterWhere(['like', 'clients.client_name', $this->getAttribute('clients.client_name')])
-            ->andFilterWhere(['like', 'company.company_name', $this->getAttribute('company.company_name')])
-            ->andFilterWhere(['like', 'user.username', $this->getAttribute('user.username')]);
+            ->andFilterWhere(['like', 'company.company_name', $this->getAttribute('company.company_name')]);
 
 
         return $dataProvider;

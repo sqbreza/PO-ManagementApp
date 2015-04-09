@@ -37,7 +37,7 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 
 ?>
 
-<?php if ((Yii::$app->user->can("admin")) AND ($model->status == 'Pending')) { ?>
+<?php if (Yii::$app->user->can("admin")) { ?>
 
 <div class="row">
     <div class="col-sm-12">

@@ -39,8 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
              'po_no',
              'status',
             // 'client_company_id',
-             //'user_id',
-             'user.username',
+            // 'user_id',
             // 'supervisor_name',
 
 

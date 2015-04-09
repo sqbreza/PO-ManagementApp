@@ -1,4 +1,4 @@
-$('.form-control').on("keyup keypress", function(e) {
+$('.addLine').on("keyup keypress", function(e) {
     var code = e.keyCode || e.which;
     if (code  == 13) {
         e.preventDefault();
@@ -29,7 +29,6 @@ $('body').on('click', '.add', function (e) {
 $( ".addSection" ).on('keyup','.costs,.units',function() {
 
     var calc = $('#calculation').val();
-
 
     costs = $(this).parents('.eachLine').find('.costs').val();
     units = $(this).parents('.eachLine').find('.units').val();
