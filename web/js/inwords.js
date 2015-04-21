@@ -48,7 +48,7 @@ function NumberToWords() {
 
         n = Math.floor(n / 100);
         var hun = Math.floor(n % 10);
-        word = (hun > 0 ? (units[hun] + " Hundred ") : '') + word;
+        word = (hun > 0 ? (units[hun] + " hundred ") : '') + word;
 
         return word;
     };

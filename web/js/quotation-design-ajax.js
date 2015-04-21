@@ -17,6 +17,7 @@ $('body').on('click', '#save', function (e) {
     project_name_header = $.trim(formObj.project_name_header);
     grand_total = $.trim(formObj.grand_total);
     amounts_in_word = $.trim(formObj.amounts_in_word);
+    client_company_id = $.trim(formObj.client_company_id);
 
     if( supervisor_name.length === 0 ) {
         ajaxCall = false;
@@ -41,6 +42,11 @@ $('body').on('click', '#save', function (e) {
     if( amounts_in_word.length === 0 ) {
         ajaxCall = false;
         alert('Amounts in words must not be empty!');
+    }
+
+    if( client_company_id.length === 0 ) {
+        ajaxCall = false;
+        alert('Please select client name!');
     }
 
     if(ajaxCall){

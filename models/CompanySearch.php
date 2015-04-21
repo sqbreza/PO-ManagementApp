@@ -19,7 +19,7 @@ class CompanySearch extends Company
     {
         return [
             [['id', 'total_employee'], 'integer'],
-            [['company_name', 'address', 'established_date', 'contact_no', 'email', 'website'], 'safe'],
+            [['company_name', 'address', 'established_date', 'contact_no', 'email', 'website', 'quotation_header_image', 'quotation_table_header_color', 'quotation_table_sub_header_color', 'quotation_watermark_image', 'bill_header_image', 'bill_table_header_color', 'bill_table_sub_header_color', 'bill_watermark_image'], 'safe'],
             [['company_vat'], 'number'],
         ];
     }
@@ -67,7 +67,15 @@ class CompanySearch extends Company
             ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'contact_no', $this->contact_no])
             ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'website', $this->website]);
+            ->andFilterWhere(['like', 'website', $this->website])
+            ->andFilterWhere(['like', 'quotation_header_image', $this->quotation_header_image])
+            ->andFilterWhere(['like', 'quotation_table_header_color', $this->quotation_table_header_color])
+            ->andFilterWhere(['like', 'quotation_table_sub_header_color', $this->quotation_table_sub_header_color])
+            ->andFilterWhere(['like', 'quotation_watermark_image', $this->quotation_watermark_image])
+            ->andFilterWhere(['like', 'bill_header_image', $this->bill_header_image])
+            ->andFilterWhere(['like', 'bill_table_header_color', $this->bill_table_header_color])
+            ->andFilterWhere(['like', 'bill_table_sub_header_color', $this->bill_table_sub_header_color])
+            ->andFilterWhere(['like', 'bill_watermark_image', $this->bill_watermark_image]);
 
         return $dataProvider;
     }

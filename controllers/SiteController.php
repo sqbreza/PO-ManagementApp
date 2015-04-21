@@ -69,14 +69,11 @@ class SiteController extends Controller
         //$quotation_ref = QuotationRef::find()->where('ref = :ref',['ref'=>$quotation->ref,])->all();
         $section = QuotationRef::find()->where(['ref'=>$quotation->ref])->groupBy('section')->orderBy('id')->asArray()->all();
 
+        $baseUrl = Yii::getAlias('@web').'/uploads/q/';
+        $header = "<img src='".$baseUrl.$company->quotation_header_image."'>";
+        $watermark = $baseUrl.$company->quotation_watermark_image;
 
-
-
-
-        $header = "<img src='../web/images/maverick-logo.jpg'>";
-       // $header = "<div><div style='float: left; width: 200px; font-size: 32px;' class='text-muted'>QUOTATION</div><div style='float: left;'><img src='../web/images/ice9.png' width='60' style='float:right;'/></div></div>";
-        $footer = "<div style='float:left; width: 100%; text-align: center;'> <strong> Contact No.-".$company->contact_no." | ".$company->address." </strong> <br> ".$company->email." | ".$company->website."</div>";
-        $watermark = "../web/images/watermark.jpg";
+  $footer = "<div style='float:left; width: 100%; text-align: center;'> <strong> Contact No.-".$company->contact_no." | ".$company->address." </strong> <br> ".$company->email." | ".$company->website."</div>";
         $htmlContent = $this->renderPartial('_reportView',[
             'quotation'=>$quotation,
             'template'=>$template,
@@ -84,11 +81,8 @@ class SiteController extends Controller
             'client'=>$client,
             'section'=>$section
         ]);
-        //$htmlContent = 'test';
-        $pdf = Yii::$app->pdf;
+         $pdf = Yii::$app->pdf;
         $mpdf = $pdf->api; // fetches mpdf api
-        //$mpdf->SetHTMLHeader ($header);
-       // $mpdf->SetHTMLFooter ($footer);
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter ($footer);
         $mpdf->SetWatermarkImage ($watermark,0.1, '',array(0,0));

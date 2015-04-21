@@ -73,6 +73,7 @@ $company_name = Company::find()->where('id=:id',['id'=>$template->company_id])->
         <div class="col-sm-2"><label class="form-control"> Calculation Type: </label></div>
         <div class="col-sm-3"><label class="form-control"> <?=$template->calculation;?> </label></div>
         <div class="col-sm-3"><select class="form-control" name="calculation">
+                <option selected="selected" disabled="disabled">Select one..</option>
                 <?php
                 foreach($calculation as $key=>$name) { ?>
                     <option value="<?= $key; ?>"><?= $name; ?></option>

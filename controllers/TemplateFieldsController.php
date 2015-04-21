@@ -196,8 +196,8 @@ class TemplateFieldsController extends Controller
         if(!empty($_POST['calculation'])){
             $calculation = $_POST['calculation'];
         }else{
-            Yii::$app->getSession()->setFlash('error', 'Calculation type must not be empty!');
-            return $this->redirect('create-template');
+            $calculation = '';
+
         }
 
         $id = $_POST['id'];
@@ -208,7 +208,9 @@ class TemplateFieldsController extends Controller
             $model->name = $template_name;
             $model->company_id = $company_id;
             $model->type = $type;
-            $model->calculation = $calculation;
+            if(!empty($calculation)){
+                $model->calculation = $calculation;
+            }
             if(!$model->save()) {
                 $isSave = false;
             }

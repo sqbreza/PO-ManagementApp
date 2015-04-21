@@ -25,13 +25,29 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'total_employee') ?>
 
-    <?php // echo $form->field($model, 'company_vat') ?>
-
     <?php // echo $form->field($model, 'contact_no') ?>
 
     <?php // echo $form->field($model, 'email') ?>
 
     <?php // echo $form->field($model, 'website') ?>
+
+    <?php // echo $form->field($model, 'company_vat') ?>
+
+    <?php // echo $form->field($model, 'quotation_header_image') ?>
+
+    <?php // echo $form->field($model, 'quotation_table_header_color') ?>
+
+    <?php // echo $form->field($model, 'quotation_table_sub_header_color') ?>
+
+    <?php // echo $form->field($model, 'quotation_watermark_image') ?>
+
+    <?php // echo $form->field($model, 'bill_header_image') ?>
+
+    <?php // echo $form->field($model, 'bill_table_header_color') ?>
+
+    <?php // echo $form->field($model, 'bill_table_sub_header_color') ?>
+
+    <?php // echo $form->field($model, 'bill_watermark_image') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

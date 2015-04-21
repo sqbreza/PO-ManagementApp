@@ -18,14 +18,7 @@ $calculation =  $quotation->calculation;
 
 $service_charge = unserialize($quotation->service_charge);
 
-//print_r($service_charge);
-
-
-
 ?>
-
-
-
 <div style="width: 60%; margin-left: 20%;">
     <table class="table">
         <tr>
@@ -49,12 +42,12 @@ $service_charge = unserialize($quotation->service_charge);
 
 
 
- <div class="table-responsive" style="margin-top: 10%;">
+ <div class="table-responsive">
      <p class="text-left"><?= $quotation->note_up;?> </p>
     <table style="width: 100%;" class="table quotation text-center">
 
         <tr style="border: 1px solid grey;">
-            <td colspan="5" class="" style="background: #ed5b29; color: #ffffff;"> <h2><?=$quotation->project_name_header; ?> </h2></td>
+            <td colspan="5" class="" style="background: <?=$company->quotation_table_header_color;?>; color: #ffffff;"> <h4><?=$quotation->project_name_header; ?> </h4></td>
         </tr>
 
 
@@ -64,20 +57,22 @@ $service_charge = unserialize($quotation->service_charge);
             $sum = 0;
             ?>
             <tr style="border: 1px solid grey;">
-                <td colspan="5" class=""> <h3><?=$value['section'];?> </h3></td>
+                <td colspan="5" class=""> <h4><?=$value['section'];?> </h4></td>
 
             </tr>
 
             <tr style="border: 1px solid grey;">
-                <th class="text-center" style="width: 40%; background: #ffb278;"></th>
-                <th class="text-center" style="width: 15%; background: #ffb278;">Details</th>
-                <th class="text-center" style="width: 15%; background: #ffb278;">Cost/Day</th>
+                <th class="text-center" style="width: 40%; background: <?=$company->quotation_table_sub_header_color;?>;"></th>
+                <th class="text-center" style="width: 15%; background: <?=$company->quotation_table_sub_header_color;?>;">Details</th>
+
                 <?php if($calculation == 'Units'){ ?>
-                    <th class="text-center" style="width: 15%; background: #ffb278;">Units</th>
+                    <th class="text-center" style="width: 15%; background: <?=$company->quotation_table_sub_header_color;?>;">Cost/Unit</th>
+                    <th class="text-center" style="width: 15%; background: <?=$company->quotation_table_sub_header_color;?>;">Units</th>
                 <?php }else{ ?>
-                    <th class="text-center" style="width: 15%; background: #ffb278;">%</th>
+                    <th class="text-center" style="width: 15%; background: <?=$company->quotation_table_sub_header_color;?>;">Amount</th>
+                    <th class="text-center" style="width: 15%; background: <?=$company->quotation_table_sub_header_color;?>;">%</th>
                 <?php }?>
-                <th class="text-right" style="width: 15%; background: #ffb278;">Total</th>
+                <th class="text-right" style="width: 15%; background: <?=$company->quotation_table_sub_header_color;?>;">Total</th>
             </tr>
 
             <?php
@@ -149,6 +144,9 @@ $service_charge = unserialize($quotation->service_charge);
             $total = $total + $sum;
         }
         ?>
+        <tr style="border: 1px solid grey;">
+            <td colspan="5"> &nbsp; </td>
+        </tr>
         <tr style="border: 1px solid grey;">
             <td class="text-left" style="width: 40%;"> <strong>Grand Total(Excluding VAT) </strong> </td>
             <td colspan="3" class="text-right"></td>

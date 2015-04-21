@@ -64,7 +64,6 @@ class QuotationController extends Controller
         $status = $_POST['status'];
         $template_ref = $_POST['template_ref'];
         $company_id = $_POST['company_id'];
-        $client_company_id = $_POST['client_company_id'];
         $date = $_POST['date'];
         $show_section_amount = $_POST['show_section_amount'];
         $results = $_POST['section_name'];
@@ -78,6 +77,8 @@ class QuotationController extends Controller
         }
 
         $service_charge =serialize($_POST['service_charge']);
+
+
 
         if(!empty($_POST['supervisor_name'])){
             $supervisor_name = $_POST['supervisor_name'];
@@ -96,6 +97,13 @@ class QuotationController extends Controller
             $project_name_header = $_POST['project_name_header'];
         }else{
             Yii::$app->getSession()->setFlash('error', 'Project name header must not be empty!');
+            return $this->redirect('create-quotation?id='.$template_ref);
+        }
+
+        if(!empty($_POST['client_company_id'])){
+            $client_company_id = $_POST['client_company_id'];
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'Client name must not be empty!');
             return $this->redirect('create-quotation?id='.$template_ref);
         }
 
@@ -267,7 +275,6 @@ class QuotationController extends Controller
         $status = $_POST['status'];
         $template_ref = $_POST['template_ref'];
         $company_id = $_POST['company_id'];
-        $client_company_id = $_POST['client_company_id'];
         $date = $_POST['date'];
         $show_section_amount = $_POST['show_section_amount'];
         $results = $_POST['section_name'];
@@ -277,6 +284,12 @@ class QuotationController extends Controller
             $vat = $_POST['company_vat'];
         }else{
             $vat = 0;
+        }
+
+        if(!empty($_POST['client_company_id'])){
+            $client_company_id = $_POST['client_company_id'];
+        }else{
+            $client_company_id = '';
         }
 
         $service_charge =serialize($_POST['service_charge']);
@@ -404,7 +417,10 @@ class QuotationController extends Controller
             $model->project_name = $project_name;
             $model->project_name_header = $project_name_header;
             $model->company_id = $company_id;
-            $model->client_company_id = $client_company_id;
+
+            if(!empty($client_company_id)){
+                $model->client_company_id = $client_company_id;
+            }
             $model->amount = $grand_total;
             $model->po_no = $po_no;
             $model->date = Yii::$app->formatter->asDatetime($date, "php:Y-m-d");;

@@ -126,8 +126,12 @@ $red = "style='background:orange'";
 <div class="row">
     <div class="form-group">
         <div class="col-sm-2"><label  class="form-control">Quotation To : </label></div>
-        <div class="col-sm-8">
+        <div class="col-sm-3">
+            <label class="form-control text-center"> <?= Clients::find()->where(['id'=>$model->client_company_id])->one()->client_name;?></label>
+        </div>
+        <div class="col-sm-5">
             <select class="form-control" name="client_company_id">
+                <option selected="selected" disabled="disabled">Select one..</option>
                 <?php
                 foreach($clients as $key=>$name) { ?>
                     <option value="<?= $key; ?>"><?= $name; ?></option>
@@ -204,7 +208,6 @@ $red = "style='background:orange'";
     <div class="form-group">
         <div class="col-sm-3"><label  class="form-control">Field </label></div>
         <div class="col-sm-2"><label  class="form-control">Details</label></div>
-        <div class="col-sm-2"><label  class="form-control">Cost</label></div>
         <?php
         $calculation = Quotation::find()->select('calculation')->where('id = :id',['id'=>$model->id])->one()->calculation;
 
@@ -212,8 +215,12 @@ $red = "style='background:orange'";
 
 
         if($calculation == 'Units'){ ?>
+
+            <div class="col-sm-2"><label  class="form-control">Cost/Unit</label></div>
             <div class="col-sm-1"><label  class="form-control">Units</label></div>
         <?php }else{ ?>
+
+            <div class="col-sm-2"><label  class="form-control">Amount</label></div>
             <div class="col-sm-1"><label  class="form-control">%</label></div>
         <?php }?>
         <div class="col-sm-2"><label  class="form-control">Total</label></div>

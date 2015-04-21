@@ -105,6 +105,7 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
         <div class="col-sm-2"><label  class="form-control">Quotation To : </label></div>
         <div class="col-sm-8">
             <select class="form-control" name="client_company_id">
+                <option selected="selected" disabled="disabled">Select one..</option>
                 <?php
                 foreach($clients as $key=>$name) { ?>
                     <option value="<?= $key; ?>"><?= $name; ?></option>
@@ -177,17 +178,16 @@ $clients = ArrayHelper::map(Clients::find()->all(), 'id', 'client_name');
     <div class="form-group">
         <div class="col-sm-3"><label  class="form-control">Field </label></div>
         <div class="col-sm-2"><label  class="form-control">Details</label></div>
-        <div class="col-sm-2"><label  class="form-control">Cost*</label></div>
         <?php
         $calculation = Template::find()->select('calculation')->where('id = :id',['id'=>$id])->one()->calculation;
 
 
 
         if($calculation == 'Units'){ ?>
-
-
+            <div class="col-sm-2"><label  class="form-control">Cost/Unit</label></div>
             <div class="col-sm-1"><label  class="form-control">Units</label></div>
         <?php }else{ ?>
+            <div class="col-sm-2"><label  class="form-control">Amount</label></div>
             <div class="col-sm-1"><label  class="form-control">%</label></div>
         <?php }?>
         <input  type="hidden" class="form-control" id="calculation" name="calculation" value="<?= $calculation?>" />
@@ -286,13 +286,22 @@ foreach($section as $key=>$value){
 
 <div class="row">
     <div class="form-group">
-        <div class="col-sm-2">
+        <!--<div class="col-sm-2">
             <label>
                 <input type="hidden" name="show_section_amount" value="0">
                 <input type="checkbox" id="" name="show_section_amount" value="1"> Show Sub-total in Template
 
             </label>
+        </div>-->
+
+        <div class="col-sm-2">
+            <label>
+                <input  type="hidden" name="show_section_amount" value="1">
+                <input  type="checkbox" id="" name="show_section_amount" value="0"> Hide sub-total in Template
+
+            </label>
         </div>
+
         <div class="col-sm-3">
 
             <label>
