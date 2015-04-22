@@ -308,7 +308,7 @@ foreach($section as $key=>$value){
 
                 <input  type="hidden"  name="company_vat_checked" value="0">
                 <input  type="checkbox" id="check_id" name="company_vat_checked" value="1"> Add VAT @
-                <input readonly  size="1" maxlength="2" type="text" value="15" name="company_vat" id="company_vat" style="background: #eee;"> %
+                <input readonly  size="1" maxlength="2" type="text" value="<?= Company::findOne($template->company_id)->company_vat; ?>" name="company_vat" id="company_vat" style="background: #eee;"> %
 
             </label>
 

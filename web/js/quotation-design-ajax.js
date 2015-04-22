@@ -55,7 +55,6 @@ $('body').on('click', '#save', function (e) {
         url  : 'form',
         type: 'POST',
         data: formData,
-        async: false,
         success: function (data) {
 
             var data = JSON.parse(data);
@@ -129,7 +128,6 @@ $('body').on('click', '#update', function (e) {
          url  : 'form-update',
          type: 'POST',
          data: formData,
-         async: false,
          success: function (data) {
              var data = JSON.parse(data);
 

@@ -71,28 +71,28 @@ class CompanyController extends Controller
 
             if($_FILES['Company']['size']['quotation_header_image'] != 0){
                 $model->quotation_header_image = UploadedFile::getInstance($model, 'quotation_header_image');
-                $filename = 'IMG'.date('Ymdhis') . '.' . $model->quotation_header_image->extension;
+                $filename = 'IMG1'.date('Ymdhis') . '.' . $model->quotation_header_image->extension;
                 $model->quotation_header_image->saveAs('uploads/q/' . $filename);
                 $model->quotation_header_image = $filename;
             }
 
             if($_FILES['Company']['size']['quotation_watermark_image'] != 0){
                 $model->quotation_watermark_image = UploadedFile::getInstance($model, 'quotation_watermark_image');
-                $filename = 'IMG'.date('Ymdhis') . '.' . $model->quotation_watermark_image->extension;
+                $filename = 'IMG2'.date('Ymdhis') . '.' . $model->quotation_watermark_image->extension;
                 $model->quotation_watermark_image->saveAs('uploads/q/' . $filename);
                 $model->quotation_watermark_image = $filename;
             }
 
             if($_FILES['Company']['size']['bill_header_image'] != 0){
                 $model->bill_header_image = UploadedFile::getInstance($model, 'bill_header_image');
-                $filename = 'IMG'.date('Ymdhis') . '.' . $model->bill_header_image->extension;
+                $filename = 'IMG3'.date('Ymdhis') . '.' . $model->bill_header_image->extension;
                 $model->bill_header_image->saveAs('uploads/q/' . $filename);
                 $model->bill_header_image = $filename;
             }
 
             if($_FILES['Company']['size']['bill_watermark_image'] != 0){
                 $model->bill_watermark_image = UploadedFile::getInstance($model, 'bill_watermark_image');
-                $filename = 'IMG'.date('Ymdhis') . '.' . $model->bill_watermark_image->extension;
+                $filename = 'IMG4'.date('Ymdhis') . '.' . $model->bill_watermark_image->extension;
                 $model->bill_watermark_image->saveAs('uploads/q/' . $filename);
                 $model->bill_watermark_image = $filename;
             }
