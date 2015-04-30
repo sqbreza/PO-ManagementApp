@@ -53,9 +53,7 @@ class Quotation extends \yii\db\ActiveRecord
             [['amount','vat'], 'number'],
             [['date', 'created_time'], 'safe'],
             [['note_up', 'note_down','calculation','service_charge'], 'string'],
-            [['ref', 'project_name', 'project_name_header', 'po_no', 'status','amount_words'], 'string', 'max' => 255],
-            [['supervisor_name'], 'string', 'max' => 11],
-
+            [['ref', 'project_name', 'project_name_header', 'po_no', 'status','amount_words','supervisor_name'], 'string', 'max' => 255],
 
         ];
     }

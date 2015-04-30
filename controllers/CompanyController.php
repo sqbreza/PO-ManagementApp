@@ -11,11 +11,26 @@ use yii\filters\VerbFilter;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
 
+use yii\web\ForbiddenHttpException;
+
 /**
  * CompanyController implements the CRUD actions for Company model.
  */
 class CompanyController extends Controller
 {
+
+    public function init()
+    {
+        // check for admin permission (`tbl_role.can_admin`)
+        // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("moderate")) {
+            throw new ForbiddenHttpException('You are not allowed to perform this action.');
+        }
+
+        parent::init();
+    }
+
+
     public function behaviors()
     {
         return [
@@ -133,7 +148,9 @@ class CompanyController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             if($_FILES['Company']['size']['quotation_header_image'] != 0){
-                unlink('uploads/q/'.$quotation_header_image);
+                if (file_exists('uploads/q/'.$quotation_header_image)) {
+                    unlink('uploads/q/' . $quotation_header_image);
+                }
                 $model->quotation_header_image = UploadedFile::getInstance($model, 'quotation_header_image');
                 $filename = 'IMG1'.date('Ymdhis') . '.' . $model->quotation_header_image->extension;
                 $model->quotation_header_image->saveAs('uploads/q/' . $filename);
@@ -143,7 +160,9 @@ class CompanyController extends Controller
             }
 
             if($_FILES['Company']['size']['quotation_watermark_image'] != 0){
-                unlink('uploads/q/'.$quotation_watermark_image);
+                if (file_exists('uploads/q/'.$quotation_watermark_image)) {
+                    unlink('uploads/q/' . $quotation_watermark_image);
+                }
                 $model->quotation_watermark_image = UploadedFile::getInstance($model, 'quotation_watermark_image');
                 $filename = 'IMG2'.date('Ymdhis') . '.' . $model->quotation_watermark_image->extension;
                 $model->quotation_watermark_image->saveAs('uploads/q/' . $filename);
@@ -154,7 +173,9 @@ class CompanyController extends Controller
             }
 
             if($_FILES['Company']['size']['bill_header_image'] != 0){
-                unlink('uploads/q/'.$bill_header_image);
+                if (file_exists('uploads/q/'.$bill_header_image)) {
+                    unlink('uploads/q/' . $bill_header_image);
+                }
                 $model->bill_header_image = UploadedFile::getInstance($model, 'bill_header_image');
                 $filename = 'IMG3'.date('Ymdhis') . '.' . $model->bill_header_image->extension;
                 $model->bill_header_image->saveAs('uploads/q/' . $filename);
@@ -166,7 +187,9 @@ class CompanyController extends Controller
             }
 
             if($_FILES['Company']['size']['bill_watermark_image'] != 0){
-                unlink('uploads/q/'.$bill_watermark_image);
+                if (file_exists('uploads/q/'.$bill_watermark_image)) {
+                    unlink('uploads/q/' . $bill_watermark_image);
+                }
                 $model->bill_watermark_image = UploadedFile::getInstance($model, 'bill_watermark_image');
                 $filename = 'IMG4'.date('Ymdhis') . '.' . $model->bill_watermark_image->extension;
                 $model->bill_watermark_image->saveAs('uploads/q/' . $filename);

@@ -11,16 +11,26 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\HttpException;
 
+use yii\web\ForbiddenHttpException;
 
-if (!Yii::$app->user->can("moderate")) {
-    throw new HttpException(403, 'You are not allowed to perform this action.');
-}
 
 /**
  * TemplateFieldsController implements the CRUD actions for TemplateFields model.
  */
 class TemplateFieldsController extends Controller
 {
+
+    public function init()
+    {
+        // check for admin permission (`tbl_role.can_admin`)
+        // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("user")) {
+            throw new ForbiddenHttpException('You are not allowed to perform this action.');
+        }
+
+        parent::init();
+    }
+
     public function behaviors()
     {
         return [
@@ -99,7 +109,6 @@ class TemplateFieldsController extends Controller
 
         }catch(Exception $e) {
             $transaction->rollback();
-
         }
         return $this->redirect(['template/index',]);
 

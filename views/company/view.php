@@ -38,13 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'website',
             'company_vat',
             'quotation_header_image',
+            'quotation_watermark_image',
             'quotation_table_header_color',
             'quotation_table_sub_header_color',
-            'quotation_watermark_image',
             'bill_header_image',
+            'bill_watermark_image',
             'bill_table_header_color',
             'bill_table_sub_header_color',
-            'bill_watermark_image',
         ],
     ]) ?>
 

@@ -19,11 +19,25 @@ use yii\helpers\ArrayHelper;
 
 use yii\web\UploadedFile;
 
+use yii\web\ForbiddenHttpException;
+
 /**
  * QuotationController implements the CRUD actions for Quotation model.
  */
 class QuotationController extends Controller
 {
+
+    public function init()
+    {
+        // check for admin permission (`tbl_role.can_admin`)
+        // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("user")) {
+            throw new ForbiddenHttpException('You are not allowed to perform this action.');
+        }
+
+        parent::init();
+    }
+
     public function behaviors()
     {
         return [
@@ -168,6 +182,7 @@ class QuotationController extends Controller
                     $model->type = "Quotation";
 
                     if(!$model->save()) {
+                        echo json_encode(['error'=>$model->getErrors()]);
                         $isSave = false;
                     }
 
@@ -201,6 +216,7 @@ class QuotationController extends Controller
                     $model->total = $total[$key];
 
                     if(!$model->save()) {
+                        echo json_encode(['error'=>$model->getErrors()]);
                         $isSave = false;
                     }
                 }
@@ -499,7 +515,7 @@ class QuotationController extends Controller
     public function actionDeleteQuotation()
     {
 
-        if (Yii::$app->user->can("admin")) {
+        if (Yii::$app->user->can("moderate")) {
             $isSave = false;
             $connection = \Yii::$app->db;
             $transaction = $connection->beginTransaction();

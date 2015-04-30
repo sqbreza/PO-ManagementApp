@@ -15,6 +15,9 @@ use kartik\mpdf\Pdf;
 use app\models\Quotation;
 use app\models\QuotationRef;
 
+use yii\web\ForbiddenHttpException;
+
+
 class SiteController extends Controller
 {
     public function behaviors()
@@ -62,6 +65,10 @@ class SiteController extends Controller
 
     public function actionQpdf($id) {
 
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("user")) {
+            throw new ForbiddenHttpException('You are not allowed to perform this action.');
+        }
+
         $quotation = Quotation::find()->where('id = :id',['id'=>$id,])->one();
         $template = Template::find()->where(['id'=>$quotation->template_ref])->one();
         $company = Company::find()->where(['id'=>$quotation->company_id])->one();
@@ -73,7 +80,7 @@ class SiteController extends Controller
         $header = "<img src='".$baseUrl.$company->quotation_header_image."'>";
         $watermark = $baseUrl.$company->quotation_watermark_image;
 
-  $footer = "<div style='float:left; width: 100%; text-align: center;'> <strong> Contact No.-".$company->contact_no." | ".$company->address." </strong> <br> ".$company->email." | ".$company->website."</div>";
+        $footer = "<div style='float:left; width: 100%; text-align: center;'> <strong> Contact No.-".$company->contact_no." | ".$company->address." </strong> <br> ".$company->email." | ".$company->website."</div>";
         $htmlContent = $this->renderPartial('_reportView',[
             'quotation'=>$quotation,
             'template'=>$template,

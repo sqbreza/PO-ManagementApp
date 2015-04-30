@@ -37,7 +37,7 @@ $section = QuotationRef::find()->where(['ref'=>$model->ref])->groupBy('section')
 
 ?>
 
-<?php if (Yii::$app->user->can("admin")) { ?>
+<?php if (Yii::$app->user->can("moderate")) { ?>
 
 <div class="row">
     <div class="col-sm-12">

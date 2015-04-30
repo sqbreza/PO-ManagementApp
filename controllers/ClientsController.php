@@ -9,11 +9,25 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\web\ForbiddenHttpException;
+
 /**
  * ClientsController implements the CRUD actions for Clients model.
  */
 class ClientsController extends Controller
 {
+
+    public function init()
+    {
+        // check for admin permission (`tbl_role.can_admin`)
+        // note: check for Yii::$app->user first because it doesn't exist in console commands (throws exception)
+        if (!empty(Yii::$app->user) && !Yii::$app->user->can("user")) {
+            throw new ForbiddenHttpException('You are not allowed to perform this action.');
+        }
+
+        parent::init();
+    }
+
     public function behaviors()
     {
         return [

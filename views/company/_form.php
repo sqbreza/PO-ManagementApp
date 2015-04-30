@@ -30,19 +30,20 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'quotation_header_image')->fileInput(['class'=>'form-control']) ?>
 
+    <?= $form->field($model, 'quotation_watermark_image')->fileInput(['class'=>'form-control']) ?>
+
     <?= $form->field($model, 'quotation_table_header_color')->input('color',['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'quotation_table_sub_header_color')->input('color',['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'quotation_watermark_image')->fileInput(['class'=>'form-control']) ?>
-
     <?= $form->field($model, 'bill_header_image')->fileInput(['class'=>'form-control']) ?>
+
+    <?= $form->field($model, 'bill_watermark_image')->fileInput(['class'=>'form-control']) ?>
 
     <?= $form->field($model, 'bill_table_header_color')->input('color',['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'bill_table_sub_header_color')->input('color',['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'bill_watermark_image')->fileInput(['class'=>'form-control']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
