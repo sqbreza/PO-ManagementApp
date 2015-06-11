@@ -143,36 +143,54 @@ $service_charge = unserialize($quotation->service_charge);
             }
             $total = $total + $sum;
         }
-        ?>
-        <tr style="border: 1px solid grey;">
-            <td colspan="5"> &nbsp; </td>
-        </tr>
-        <tr style="border: 1px solid grey;">
-            <td class="text-left" style="width: 40%;"> <strong>Grand Total(Excluding VAT) </strong> </td>
-            <td colspan="3" class="text-right"></td>
-            <td class="text-center text-right"><strong><?=number_format($total,2);?></strong></td>
-        </tr>
+        $vat = $quotation->vat;
+        $total_vat = ($total * $vat)/100 ;
+        $total_with_vat =$total + $total_vat;
+
+        if($vat != 0) {
+
+            ?>
+            <tr style="border: 1px solid grey;">
+                <td colspan="5"> &nbsp; </td>
+            </tr>
+            <tr style="border: 1px solid grey;">
+                <td class="text-left" style="width: 40%;"><strong>Grand Total(Excluding VAT) </strong></td>
+                <td colspan="3" class="text-right"></td>
+                <td class="text-center text-right"><strong><?= number_format($total, 2); ?></strong></td>
+            </tr>
+
+
+
+            <tr style="border: 1px solid grey;">
+                <td class="text-left" style="width: 40%;"> VAT</td>
+                <td colspan="3" class="text-center">@ <?= $vat; ?> %</td>
+                <td class="text-center text-right"><?= number_format($total_vat, 2); ?></td>
+            </tr>
+
+            <tr style="border: 1px solid grey;">
+                <td class="text-left" style="width: 40%;"><strong>Grand Total(Including VAT) </strong></td>
+                <td colspan="3" class="text-center"></td>
+                <td class="text-center text-right"><strong> <?= number_format($total_with_vat, 2); ?> </strong></td>
+            </tr>
 
         <?php
-            $vat = $quotation->vat;
-            $total_vat = ($total * $vat)/100 ;
-            $total_with_vat =$total + $total_vat;
+        }else{
+
         ?>
 
-        <tr style="border: 1px solid grey;">
-            <td class="text-left" style="width: 40%;"> VAT  </td>
-            <td colspan="3" class="text-center">@ <?=$vat; ?> % </td>
-            <td class="text-center text-right"><?=number_format($total_vat,2);?></td>
-        </tr>
+            <tr style="border: 1px solid grey;">
+                <td colspan="5"> &nbsp; </td>
+            </tr>
+            <tr style="border: 1px solid grey;">
+                <td class="text-left" style="width: 40%;"><strong>Grand Total </strong></td>
+                <td colspan="3" class="text-right"></td>
+                <td class="text-center text-right"><strong><?= number_format($total, 2); ?></strong></td>
+            </tr>
 
-        <tr style="border: 1px solid grey;">
-            <td class="text-left" style="width: 40%;">  <strong>Grand Total(Including VAT) </strong>  </td>
-            <td colspan="3" class="text-center"></td>
-            <td class="text-center text-right"> <strong> <?=number_format($total_with_vat,2);?> </strong> </td>
-        </tr>
+        <?php } ?>
 
     </table>
-     <p class="text-left">In Words: Taka <?= $quotation->amount_words;?> only. </p>
+     <p class="text-left">In Words: <?= $quotation->amount_words;?> only. </p>
      <p class="text-left"><?= $quotation->note_down;?></p>
 </div>
 

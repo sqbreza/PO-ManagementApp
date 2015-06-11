@@ -279,7 +279,7 @@ $red = "style='background:orange'";
             <div class="col-sm-3">
                 <label>
                     <input  <?php if($service_charge[$service_key]!=0) echo 'checked';?> type="checkbox" class="service_charge" id="check_id_<?=$sectionValue?>"> Add Service Charge @
-                    <input size="1" maxlength="3" type="text" value="<?= $service_charge[$service_key];?>" name="service_charge[]" class="service_charge" id="service_charge_<?=$sectionValue;?>"> %
+                    <input size="1" maxlength="4" type="text" value="<?= $service_charge[$service_key];?>" name="service_charge[]" class="service_charge" id="service_charge_<?=$sectionValue;?>"> %
                 </label>
             </div>
                 <div class="col-sm-5"></div>

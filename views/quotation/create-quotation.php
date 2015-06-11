@@ -238,7 +238,7 @@ foreach($section as $key=>$value){
                 <div class="col-sm-3">
                     <label>
                         <input  type="checkbox" class="service_charge" id="check_id_<?=$sectionValue?>"> Add Service Charge @
-                        <input size="1" maxlength="3" type="text"  name="service_charge[]" class="service_charge" id="service_charge_<?=$sectionValue;?>"> %
+                        <input size="1" maxlength="4" type="text"  name="service_charge[]" class="service_charge" id="service_charge_<?=$sectionValue;?>"> %
                     </label>
                 </div>
                 <div class="col-sm-5"></div>

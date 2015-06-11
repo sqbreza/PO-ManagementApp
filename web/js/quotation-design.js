@@ -6,6 +6,8 @@ $('.addLine').on("keyup keypress", function(e) {
     }
 });
 
+
+
 $( "#project_name" ).on('keyup',function() {
     $('#project_name_header').val($('#project_name').val());
 });
@@ -13,12 +15,31 @@ $( "#project_name" ).on('keyup',function() {
 
 $('body').on('click', '.delete', function (e) {
     $(this).parents('.eachLine').remove();
+
+    section = $('.addSection');
+
+    $(section).each(function(i,v){
+        section_id = $(v).attr('id');
+        totalAmount(section_id);
+        serviceCharge('check_id_'+section_id);
+        grandTotal()
+
+    });
 });
 
 $('body').on('click', '.add', function (e) {
     var divItem =$(this).parents('.addSection');
     nameOfSectionId = divItem.attr("id");
     $(this).parents('.addLine').after("<div class='addLine'><div class='form-group eachLine'><div class='col-sm-3'><input type='text' name='"+nameOfSectionId+"_field_names[]' class='form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_details[]' class='form-control'/></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_costs[]' class='costs form-control'/></div><div class='col-sm-1'><input type='text' name='"+nameOfSectionId+"_units[]'class='units form-control' /></div><div class='col-sm-2'><input type='text' name='"+nameOfSectionId+"_total[]' class='total form-control'/></div><div class='col-sm-2'><button class='btn btn-sm btn-danger delete'>Delete</button> <button class='btn btn-sm btn-success add'>Add</button></div></div></div>");
+
+    $('.addLine').on("keyup keypress", function(e) {
+        var code = e.keyCode || e.which;
+        if (code  == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
 });
 
 
@@ -204,6 +225,5 @@ $(document).ready(function(){
         grandTotal()
 
     });
-
 });
 
